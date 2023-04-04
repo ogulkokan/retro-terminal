@@ -1,0 +1,16 @@
+/* This CSS file contains some default styling. */
+
+x-knob {
+	display: inline-block;
+	width: 2em;
+	height: 2em;
+
+	/* An internal element is target of pointer-events, but not this external x-knob element. */
+}
+
+/*
+This only looks good if divisions >= 2.
+x-knob::shadow .knob_gfx {
+	transition: 200ms transform;
+}
+*/

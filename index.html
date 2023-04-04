@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="styles.css">
+    <title>TERMINAL v0.01-alpha</title>
+    <!-- <script src="./components/dial.js"></script> -->
+    <script src="terminal.js" type="module"></script>
+    <!-- <script src="/util/rot.js"></script> -->
+    <svg style="display: none;">
+        <style>
+            .handle {
+                cursor: grab;
+            }
+        </style>
+        <!-- SVG for the radial dial component -->
+        <defs id="sample_gfx">
+            <symbol id="circle-with-dot" viewBox="-6 -6 12 12">
+                <circle
+                    cx="0"
+                    cy="0"
+                    r="5.875"
+                    stroke="#2e3436"
+                    fill="#babdb6"
+                    stroke-width="0.25"
+                />
+                <circle
+                    class="handle"
+                    cx="0"
+                    cy="-3.75"
+                    r="0.75"
+                    stroke="none"
+                    fill="#2e3436"
+                />
+            </symbol>
+        </defs>
+    </svg>
+</head>
+<body>
+    <!-- the actual device -->
+    <div id="monitor">
+        <!-- the rounded edge near the glass -->
+        <div id="bezel">
+            <!-- the overlay and horizontal pattern -->
+            <div id="crt" class="off" onClick="handleClick(event)"> 
+                <div class="terminal">
+                    <div id="terminal-output"></div>
+                    <div id="terminal-input" contenteditable="true"></div>
+                </div>
+                <!-- slowly moving scanline -->
+                <!-- <div class="scanline"></div> -->
+                <!-- the input and output -->
+                <!-- <div class="terminal"></div> -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
