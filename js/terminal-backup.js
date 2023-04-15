@@ -68,7 +68,7 @@ function init() {
 	  // Clear the input field
 	  event.target.innerText = "";
 	}
-  }
+}
   
   async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
