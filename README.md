@@ -3,18 +3,20 @@
 A simple terminal emulator built with JavaScript.
 
 ## Project Structure
+<pre>
 js/
 ├─ handlers/
-│ ├─ inputHandler.js
-│ └─ globalHandlers.js
+│   ├─ inputHandler.js
+│   └─ globalHandlers.js
 ├─ terminal/
-│ ├─ terminal.js
-│ └─ cursor.js
+│   ├─ terminal.js
+│   └─ cursor.js
 ├─ utils/
-│ ├─ fullscreen.js
-│ └─ theme.js
+│   ├─ fullscreen.js - later
+│   └─ theme.js - later
 ├─ main.js
 └─ init.js
+</pre>
 
 
 ### handlers
