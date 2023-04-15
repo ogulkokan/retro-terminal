@@ -55,35 +55,33 @@
  
  /* Terminal input styles */
  #terminal-input {
-   outline: none;
-   cursor: none;
-   color: #ff0;
-   font-weight: bold;
-   background-color: transparent;
-   border: none;
-   width: 100%;
-   word-break: break-all;
-   white-space: pre-wrap;
-   caret-color: transparent;
- }
+  outline: none;
+  cursor: none;
+  color: #ff0;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  word-break: break-all;
+  white-space: pre-wrap;
+  caret-color: transparent;
+  padding: 0;
+  margin: 0;
+}
  
- .terminal-input-wrapper {
-   display: flex;
-   align-items: baseline;
-   position: relative;
- }
+#terminal-input-wrapper {
+  display: flex;
+  align-items: baseline;
+  position: relative;
+}
  
  /* Cursor styles */
  .cursor {
-   display: inline-block;
-   background-color: yellow;
-   width: 5px;
-   height: 1.2em;
-   margin-right: 2px;
-   margin-bottom: 30px;
-   animation: blink 1s steps(1, end) infinite;
- }
- 
+  display: inline-block;
+  background-color: yellow;
+  width: 5px;
+  height: 1.2em;
+  animation: blink 1s steps(1, end) infinite;
+}
  @keyframes blink {
    50% {
      background-color: transparent;
