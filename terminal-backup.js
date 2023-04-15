@@ -1,43 +1,46 @@
-// Initialization
+// import { setVolume } from "./util/speak.js";
+// import { click } from "./sound/index.js";
+// import { on, off } from "./util/power.js";
+// import { toggleFullscreen } from "./util/screens.js";
+// import { type } from "./util/io.js";
+
 function init() {
+	// Add initialization code here
 	console.log("Terminal initialized");
-  
+
 	const terminalInput = document.getElementById("terminal-input");
 	if (terminalInput) {
 	  terminalInput.addEventListener("keydown", handleInput);
 	}
   }
-  document.addEventListener("DOMContentLoaded", init);
   
-  // Cursor handling
-  function initCursor() {
-	const terminalInput = document.getElementById("terminal-input");
-	const cursor = document.createElement("span");
-	cursor.classList.add("cursor");
-	terminalInput.parentElement.insertBefore(cursor, terminalInput.nextSibling);
-  
-	terminalInput.addEventListener("input", () => adjustCursorPosition(cursor));
-	terminalInput.addEventListener("focus", () => cursor.classList.add("cursor"));
-	terminalInput.addEventListener("blur", () => cursor.classList.remove("cursor"));
-  }
-  initCursor();
-  
-  function adjustCursorPosition(cursor) {
-	const terminalInput = document.getElementById("terminal-input");
-	const inputText = terminalInput.innerText.trim();
-	const inputWidth = getTextWidth(inputText, getComputedStyle(terminalInput));
-	cursor.style.marginLeft = inputWidth + "px";
-  }
-  
-  function getTextWidth(text, style) {
-	const canvas = document.createElement("canvas");
-	const context = canvas.getContext("2d");
-	context.font = style.fontSize + " " + style.fontFamily;
-	return context.measureText(text).width;
-  }
+document.addEventListener("DOMContentLoaded", init);
+showWelcomeMessage();
 
-  // Terminal handling
-  async function handleInput(event) {
+// Add this code after the existing event listeners in the `init()` function
+const terminalInput = document.getElementById("terminal-input");
+const cursor = document.createElement("span");
+cursor.classList.add("cursor");
+terminalInput.parentElement.insertBefore(cursor, terminalInput.nextSibling);
+
+terminalInput.addEventListener("input", adjustCursorPosition);
+terminalInput.addEventListener("focus", () => cursor.classList.add("cursor"));
+terminalInput.addEventListener("blur", () => cursor.classList.remove("cursor"));
+
+function adjustCursorPosition() {
+  const inputText = terminalInput.innerText.trim();
+  const inputWidth = getTextWidth(inputText, getComputedStyle(terminalInput));
+  cursor.style.marginLeft = inputWidth + "px";
+}
+
+function getTextWidth(text, style) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  context.font = style.fontSize + " " + style.fontFamily;
+  return context.measureText(text).width;
+}
+
+async function handleInput(event) {
 	const terminalOutput = document.getElementById("terminal-output");
 	if (event.key === "Enter") {
 	  event.preventDefault();
@@ -70,6 +73,7 @@ function init() {
 	}
   }
   
+
   async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
 	const welcomeMessage = "Available commands: help, date, clear";
@@ -78,8 +82,6 @@ function init() {
 	await animateText(newOutputLine, welcomeMessage);
   }
 
-  showWelcomeMessage();
-  
 function processCommand(inputText) {
 	switch (inputText.toLowerCase()) {
 		case "help":
@@ -93,16 +95,61 @@ function processCommand(inputText) {
 			return `Unknown command: ${inputText}`;
 	}
 }
-  
+
 async function animateText(element, text, delay = 50) {
 	for (const char of text) {
 	  element.textContent += char;
 	  await new Promise((resolve) => setTimeout(resolve, delay));
 	}
   }
-  
-  // Event handlers and utility functions
-  function handleClick(event) {
+
+// Check if the element with the id "dial" exists before adding an event listener
+const dialElement = document.getElementById("dial");
+if (dialElement) {
+  dialElement.addEventListener("input", (event) => {
+    let value = event.target.value;
+    setVolume(value);
+  });
+}
+
+// Check if query param is set and load that command
+async function onload() {
+	const urlParams = new URLSearchParams(window.location.search);
+	const command = urlParams.get("command");
+
+	if (command) {
+		const { power } = await import("./util/power.js");
+		const { parse } = await import("./util/io.js");
+		power();
+		await type("> " + command, { initialWait: 3000, finalWait: 1500 });
+		await parse(command);
+
+		const { main } = await import("./util/screens.js");
+		main();
+	}
+}
+
+// Change the command passed to the parse function in order to directly load that command.
+// Then visit /debug.html which calls this function in <body> onLoad().
+async function debug() {
+	const { power } = await import("./util/power.js");
+	const { main } = await import("./util/screens.js");
+	const { parse } = await import("./util/io.js");
+	power();
+	main();
+	parse("fallout");
+}
+
+function togglePower() {
+	let isOff = document.getElementById("crt").classList.contains("off");
+	if (isOff) {
+		on();
+	} else {
+		off();
+	}
+}
+
+function handleClick(event) {
 	if (event) {
 		event.preventDefault();
 	}
@@ -111,7 +158,11 @@ async function animateText(element, text, delay = 50) {
 		input.focus();
 	}
 }
-  
+
+function fly(event) {
+	event.target.classList.toggle("fly");
+}
+
 function theme(event) {
 	click();
 	let theme = event.target.dataset.theme;
@@ -122,7 +173,7 @@ function theme(event) {
 	document.body.classList = "theme-" + theme;
 	handleClick();
 }
-  
+
 function fullscreen(event) {
 	toggleFullscreen();
 	event.target.blur();
@@ -139,14 +190,14 @@ function globalListener({ keyCode }) {
 }
 document.addEventListener("keydown", globalListener);
 
-  
+
 // Define some stuff on the window so we can use it directly from the HTML
 Object.assign(window, {
-	// debug,
+	debug,
 	onload,
-	// togglePower,
+	togglePower,
 	theme,
-	// fly,
+	fly,
 	handleClick,
 	fullscreen
 });

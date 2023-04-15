@@ -9,98 +9,84 @@
  
  /*********** VARIABLES *************/
  
- #monitor {
-    position: absolute; /* Add this line */
-    top: 50%; /* Add this line */
-    left: 50%; /* Add this line */
-    transform: translate(-50%, -50%); /* Add this line */
-  }
-
  body {
-    background-color: #bf9898;
-    font-family: 'Courier New', monospace;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    position: relative; /* Add this line */
-  }
-
-  #terminal-output {
-    color: #ff0;
-    font-weight: bold;
-    margin-bottom: 0.5em;
-  }
-  
-  #terminal-input {
-    outline: none;
-    cursor: none;
-    color: #ff0;
-    font-weight: bold;
-    outline: none;
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    word-break: break-all;
-    white-space: pre-wrap;
-    caret-color: transparent;
-  }
-
-  #terminal-input:not(:focus) {
-    cursor: none;
-  }
+   background-color: #bf9898;
+   font-family: 'Courier New', monospace;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+   overflow: hidden;
+   position: relative;
+ }
  
-  .terminal {
-    background-color: rgba(0, 0, 0, 0.75);
-    padding: 1em;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    width: 640px; /* Set a fixed width for the terminal */
-    height: 400px; /* Set a fixed height for the terminal */
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-/* Add scanlines for a more authentic CRT effect */
-.terminal::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 50%, transparent 50%);
-    background-size: 100% 2px;
-    opacity: 0.3;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  #terminal-input::before {
-    content: '';
-    display: inline-block;
-    background-color: yellow;
-    width: 5px;
-    height: 1.2em;
-    margin-right: 2px;
-    animation: blink 1s steps(1, end) infinite;
-
-  }
-  
-  @keyframes blink {
-    50% {
-      background-color: transparent;
-    }
-  }
-
-  #terminal-input:focus::before {
-    content: '';
-    display: inline-block;
-    background-color: yellow;
-    width: 5px;
-    height: 1.2em;
-    margin-right: 2px;
-    animation: blink 1s steps(1, end) infinite;
-  }
+ #terminal-output {
+   color: #ff0;
+   font-weight: bold;
+   margin-bottom: 0.5em;
+ }
+ 
+ .terminal {
+   background-color: rgba(0, 0, 0, 0.75);
+   padding: 1em;
+   border-radius: 5px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+   width: 640px; /* Set a fixed width for the terminal */
+   height: 400px; /* Set a fixed height for the terminal */
+   overflow: auto;
+   display: flex;
+   flex-direction: column;
+ }
+ 
+ /* Add scanlines for a more authentic CRT effect */
+ .terminal::before {
+   content: "";
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   background-image: linear-gradient(rgba(255, 255, 255, 0.03) 50%, transparent 50%);
+   background-size: 100% 2px;
+   opacity: 0.3;
+   z-index: 1;
+   pointer-events: none;
+ }
+ 
+ /* Terminal input styles */
+ #terminal-input {
+   outline: none;
+   cursor: none;
+   color: #ff0;
+   font-weight: bold;
+   background-color: transparent;
+   border: none;
+   width: 100%;
+   word-break: break-all;
+   white-space: pre-wrap;
+   caret-color: transparent;
+ }
+ 
+ .terminal-input-wrapper {
+   display: flex;
+   align-items: baseline;
+   position: relative;
+ }
+ 
+ /* Cursor styles */
+ .cursor {
+   display: inline-block;
+   background-color: yellow;
+   width: 5px;
+   height: 1.2em;
+   margin-right: 2px;
+   margin-bottom: 30px;
+   animation: blink 1s steps(1, end) infinite;
+ }
+ 
+ @keyframes blink {
+   50% {
+     background-color: transparent;
+   }
+ }
+ 
