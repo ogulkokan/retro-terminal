@@ -88,3 +88,18 @@
    }
  }
  
+
+ /* Add a fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation to the terminal output text */
+#terminal-output div {
+  animation: fadeIn 0.3s ease-in;
+}
