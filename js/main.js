@@ -1,8 +1,8 @@
 import { init } from './init.js';
-import { initCursor } from './js/terminal/cursor.js';
-import { showWelcomeMessage, processCommand, animateText } from './js/terminal/terminal.js';
-import { handleClick, theme, fullscreen, globalListener } from './js/handlers/globalHandlers.js';
-import { initSettings } from "./js/settings.js";
+import { initCursor } from './terminal/cursor.js';
+import { showWelcomeMessage, processCommand, animateText } from './terminal/terminal.js';
+import { handleClick, theme, fullscreen, globalListener } from './handlers/globalHandlers.js';
+import { initSettings } from "./settings.js";
 
 document.addEventListener("DOMContentLoaded", init);
 initCursor();

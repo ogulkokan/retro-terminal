@@ -9,51 +9,92 @@ export async function handleInput(event) {
 
   if (event.key === "Enter") {
     event.preventDefault();
-    const inputText = terminalInput.innerText.trim();
-
-    // Process the command and get the output
-    const outputText = processCommand(inputText);
-
-    if (outputText) {
-      const newOutputLine = document.createElement("div");
-      terminalOutput.appendChild(newOutputLine);
-
-      commandHistory.push(inputText);
-      commandIndex = commandHistory.length;
-
-      if (inputText.length > 0) {
-        // Clear the input
-        terminalInput.textContent = "";
-
-        terminalOutput.appendChild(newOutputLine);
-        await animateText(newOutputLine, "> ", 10, terminalInput);
-        await processCommand(inputText);
-      }
-      await animateText(newOutputLine, outputText, 10, terminalInput);
-    }
-
-    // Clear the input field
-    terminalInput.innerText = "";
-    // Set focus back to the terminal input
-    terminalInput.focus();
+    handleEnterKey(terminalOutput, terminalInput);
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
-    if (commandIndex > 0) {
-      commandIndex--;
-      terminalInput.innerText = commandHistory[commandIndex];
-    }
+    handleArrowUp(terminalInput);
   } else if (event.key === "ArrowDown") {
     event.preventDefault();
-    if (commandIndex < commandHistory.length - 1) {
-      commandIndex++;
-      terminalInput.innerText = commandHistory[commandIndex];
-    } else if (commandIndex === commandHistory.length - 1) {
-      commandIndex++;
-      terminalInput.innerText = "";
-    }
+    handleArrowDown(terminalInput);
   } else if (event.key === "Escape") {
     event.preventDefault();
-    // Clear the input field
+    handleEscape(terminalInput);
+  } else if (event.key === "Tab") {
+    event.preventDefault();
+    handleTab(terminalInput);
+  }
+}
+
+async function handleEnterKey(terminalOutput, terminalInput) {
+  const inputText = terminalInput.innerText.trim();
+  const outputText = processCommand(inputText);
+
+  if (outputText) {
+    const newOutputLine = document.createElement("div");
+    terminalOutput.appendChild(newOutputLine);
+
+    commandHistory.push(inputText);
+    commandIndex = commandHistory.length;
+
+    if (inputText.length > 0) {
+      terminalInput.textContent = "";
+      terminalOutput.appendChild(newOutputLine);
+      await animateText(newOutputLine, "> ", 10, terminalInput);
+      await processCommand(inputText);
+    }
+    await animateText(newOutputLine, outputText, 10, terminalInput);
+  }
+
+  terminalInput.innerText = "";
+  terminalInput.focus();
+}
+
+function handleArrowUp(terminalInput) {
+  if (commandIndex > 0) {
+    commandIndex--;
+    terminalInput.innerText = commandHistory[commandIndex];
+  }
+}
+
+function handleArrowDown(terminalInput) {
+  if (commandIndex < commandHistory.length - 1) {
+    commandIndex++;
+    terminalInput.innerText = commandHistory[commandIndex];
+  } else if (commandIndex === commandHistory.length - 1) {
+    commandIndex++;
     terminalInput.innerText = "";
   }
+}
+
+function handleEscape(terminalInput) {
+  terminalInput.innerText = "";
+}
+
+function handleTab(terminalInput) {
+  const inputText = terminalInput.innerText.trim();
+  const suggestions = getAutocompleteSuggestions(inputText);
+
+  if (suggestions.length === 1) {
+    terminalInput.innerText = suggestions[0];
+  } else if (suggestions.length > 1) {
+    console.log("Suggestions:", suggestions.join(", "));
+  }
+}
+
+function getAutocompleteSuggestions(inputText) {
+  const availableCommands = [
+    "help",
+    "date",
+    "clear",
+    "about",
+    "projects",
+    "skills",
+    "experience",
+    "education",
+    "contact",
+  ];
+
+  return availableCommands.filter((command) => {
+    return command.startsWith(inputText.toLowerCase());
+  });
 }

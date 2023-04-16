@@ -42,8 +42,9 @@ export function initSettings() {
     // Add settings options
     addFontSizeOption(settingsContainer);
     addFontFamilyOption(settingsContainer);
-    addBackgroundColorOption(settingsContainer);
-    addTextColorOption(settingsContainer);
+    // addBackgroundColorOption(settingsContainer);
+    // addTextColorOption(settingsContainer);
+    addThemeOption(settingsContainer);
   
     // Add the settings panel to the body
     document.body.appendChild(settingsPanel);
@@ -89,48 +90,49 @@ export function initSettings() {
     container.appendChild(select);
     container.appendChild(document.createElement('br'));
   }
+    
   
-  function addBackgroundColorOption(container) {
+  function addThemeOption(container) {
     const label = document.createElement('label');
-    label.textContent = 'Background Color: ';
+    label.textContent = 'Theme: ';
     container.appendChild(label);
   
-    const input = document.createElement('input');
-    input.type = 'color';
-    input.value = rgbToHex(getComputedStyle(document.querySelector('.terminal')).backgroundColor);
-    input.addEventListener('input', (event) => {
-      document.querySelector('.terminal').style.backgroundColor = event.target.value;
+    const select = document.createElement('select');
+    const themes = ['Green', 'Orange'];
+    themes.forEach((theme) => {
+      const option = document.createElement('option');
+      option.textContent = theme;
+      option.value = theme;
+      select.appendChild(option);
     });
   
-    container.appendChild(input);
+    // Set the default theme based on the current background color
+    const currentBackgroundColor = getComputedStyle(document.querySelector('.terminal')).backgroundColor;
+    select.value = currentBackgroundColor === 'rgba(5, 50, 30, 1)' ? 'Green' : 'Orange';
+  
+    select.addEventListener('change', (event) => {
+      applyTheme(event.target.value);
+    });
+  
+    container.appendChild(select);
     container.appendChild(document.createElement('br'));
   }
   
-  function addTextColorOption(container) {
-    const label = document.createElement('label');
-    label.textContent = 'Text Color: ';
-    container.appendChild(label);
+
+  function applyTheme(theme) {
+    const terminal = document.querySelector('.terminal');
+    const terminalInput = document.querySelector('#terminal-input');
+    const terminalOutput = document.querySelector('#terminal-output');
   
-    const input = document.createElement('input');
-    input.type = 'color';
-    input.value = rgbToHex(getComputedStyle(document.querySelector('.terminal')).color);
-    input.addEventListener('input', (event) => {
-      document.querySelector('.terminal').style.color = event.target.value;
-    });
-  
-    container.appendChild(input);
-    container.appendChild(document.createElement('br'));
+    if (theme === 'Green') {
+      terminal.style.background = '#05321e';
+      terminal.style.backgroundImage = 'radial-gradient(ellipse, #05321e 0%, #050505 90%)';
+      terminalInput.style.color = 'rgb(62, 209, 46)';
+      terminalOutput.style.color = 'rgb(62, 209, 46)';
+    } else if (theme === 'Orange') {
+      terminal.style.background = 'hsla(30, 57%, 14%, 1)';
+      terminal.style.backgroundImage = 'radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%)';
+      terminalInput.style.color = '#FFA128';
+      terminalOutput.style.color = '#FFA128';
+    }
   }
-  
-  function rgbToHex(rgb) {
-    const regex = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*\d+(?:\.\d+)?)?\)$/;
-    const matches = rgb.match(regex);
-    if (!matches) return null;
-  
-    const r = parseInt(matches[1]);
-    const g = parseInt(matches[2]);
-    const b = parseInt(matches[3]);
-  
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-  }
-  

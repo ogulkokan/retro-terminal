@@ -2,6 +2,10 @@
 
 A simple terminal emulator built with JavaScript.
 
+
+![Main screen](./images/ss-terminal.png)
+*Main screen of the Retro-Terminal.*
+
 ## Project Structure
 <pre>
 js/
@@ -23,7 +27,7 @@ js/
 
 This folder contains event handlers for user input and global events.
 
-- `inputHandler.js`: Handles user input in the terminal.
+- `inputHandler.js`: Manages user input within the terminal, including handling special keys like Enter, Tab, and arrow keys.
 - `globalHandlers.js`: Handles global events like fullscreen toggling.
 
 ### terminal
@@ -60,5 +64,10 @@ Handles the initialization of the application, including adding event listeners 
 - `date`: Displays the current date and time.
 - `clear`: Clears the terminal output.
 
-
+## Features
+* Autocomplete: Suggests possible commands as users start typing, similar to real terminals.
+* Command history: Users can navigate through their previously entered commands using the arrow keys.
+* Customizable appearance: Allows users to customize the terminal's appearance, such as changing the font size, font family, background color, and text color.
+* Mobile-friendly: Fully responsive design that works well on mobile devices.
+* Typing sound effects: Subtle typing sound effects and animations make the terminal feel more engaging and realistic.
 

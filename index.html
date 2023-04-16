@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- <link rel="icon" type="image/png" href="favicon.png" /> -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="css/main-styles.css">
     <title>RETRO TERMINAL v0.01-alpha</title>
     <!-- <script src="./components/dial.js"></script> -->
-    <script src="main.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
 
 </head>
 <body>
     <!-- the overlay and horizontal pattern -->
     <div id="crt" class="off" onClick="handleClick(event)"> 
         <div class="terminal">
+            <div class="scanline"></div>
             <div id="terminal-output"></div>
             <div id="terminal-input-wrapper">
                 <div id="terminal-input" contenteditable="true"></div>

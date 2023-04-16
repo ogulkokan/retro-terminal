@@ -1,0 +1,127 @@
+/* color: #FFA128; */
+/* background: hsla(30, 57%, 14%, 1); */
+/* background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%); */
+
+.terminal {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    width: calc(100% - 2em);
+    height: calc(70vh - 2em);
+    max-height: calc(80ch * 0.8);
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background: #05321e;
+    background-image: radial-gradient(ellipse, #05321e 0%, #050505 90%);
+    background: hsla(30, 57%, 14%, 1);
+    background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
+    animation: txt-shadow 1.6s infinite;
+    width: calc(80ch - 2em);
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .terminal {
+      width: 640px;
+      height: 400px;
+    }
+  }
+  
+  .terminal #terminal-output {
+    width: 100%;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  
+  .terminal #terminal-input-wrapper {
+    width: 100%;
+  }
+  
+  .terminal::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 50%, transparent 50%);
+    background-size: 100% 2px;
+    opacity: 0.3;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .terminal::after {
+  animation: grain 8s steps(10) infinite;
+  background-image: url(https://i.ibb.co/6Rw6ysv/noise.png);
+  content: "";
+  height: 300%;
+  left: -50%;
+  opacity: 0.3;
+  position: absolute;
+  top: -110%;
+  width: 300%;
+  }
+
+/* https://css-tricks.com/snippets/css/animated-grainy-texture/ */
+@keyframes grain {
+    0%, 100% { transform:translate(0, 0) }
+    10% { transform:translate(-5%, -10%) }
+    20% { transform:translate(-15%, 5%) }
+    30% { transform:translate(7%, -25%) }
+    40% { transform:translate(-5%, 25%) }
+    50% { transform:translate(-15%, 10%) }
+    60% { transform:translate(15%, 0%) }
+    70% { transform:translate(0%, 15%) }
+    80% { transform:translate(3%, 35%) }
+    90% { transform:translate(-10%, 10%) }
+  }
+  
+  .terminal #terminal-input {
+    outline: none;
+    cursor: none;
+    color: #FFA128;
+    /* color: rgb(62, 209, 46); */
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    word-break: break-all;
+    white-space: pre-wrap;
+    caret-color: transparent;
+    padding: 0;
+    margin: 0;
+  }
+
+  #terminal-input-wrapper {
+    display: flex;
+    align-items: baseline;
+    position: relative;
+  }
+  
+  #terminal-output {
+    /* color: #ff0; */
+    /* color: rgb(62, 209, 46); */
+    color: #FFA128;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+  }
+   
+   /* Terminal input styles */
+   /* #terminal-input {
+    outline: none;
+    cursor: none;
+    color: #ff0;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    word-break: break-all;
+    white-space: pre-wrap;
+    caret-color: transparent;
+    padding: 0;
+    margin: 0;
+  } */
