@@ -59,7 +59,7 @@ export function initSettings() {
     input.type = 'number';
     input.value = getComputedStyle(document.querySelector('.terminal')).fontSize.slice(0, -2);
     input.min = 10;
-    input.max = 30;
+    input.max = 25;
     input.addEventListener('input', (event) => {
       document.querySelector('.terminal').style.fontSize = event.target.value + 'px';
     });
@@ -119,7 +119,7 @@ export function initSettings() {
   }
   
 
-  function applyTheme(theme) {
+  export function applyTheme(theme) {
     const terminal = document.querySelector('.terminal');
     const terminalInput = document.querySelector('#terminal-input');
     const terminalOutput = document.querySelector('#terminal-output');

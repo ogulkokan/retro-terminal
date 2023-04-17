@@ -3,34 +3,31 @@
 /* background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%); */
 
 .terminal {
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.75);
-    padding: 1em;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    width: calc(100% - 2em);
-    height: calc(70vh - 2em);
-    max-height: calc(80ch * 0.8);
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background: #05321e;
-    background-image: radial-gradient(ellipse, #05321e 0%, #050505 90%);
-    background: hsla(30, 57%, 14%, 1);
-    background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
-    animation: txt-shadow 1.6s infinite;
-    width: calc(80ch - 2em);
-    overflow: hidden;
-    margin: 0 auto;
-  }
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 1em;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  width: calc(100vw - 2em);
+  max-width: 95vw;
+  height: calc(80vh - 2em);
+  max-height: calc(100vh - 10em);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: #05321e;
+  background-image: radial-gradient(ellipse, #05321e 0%, #050505 90%);
+  background: hsla(30, 57%, 14%, 1);
+  background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
+  animation: txt-shadow 1.6s infinite;
+  font-size: 13px;
+}
+
   
   @media (min-width: 768px) {
     .terminal {
-      width: 640px;
-      height: 400px;
+      width: 75vw;
+      height: 100vh;
     }
   }
   
@@ -110,18 +107,4 @@
     font-weight: bold;
     margin-bottom: 0.5em;
   }
-   
-   /* Terminal input styles */
-   /* #terminal-input {
-    outline: none;
-    cursor: none;
-    color: #ff0;
-    font-weight: bold;
-    background-color: transparent;
-    border: none;
-    word-break: break-all;
-    white-space: pre-wrap;
-    caret-color: transparent;
-    padding: 0;
-    margin: 0;
-  } */
+  

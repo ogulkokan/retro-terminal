@@ -1,6 +1,9 @@
+import { applyTheme } from "../settings.js";
+import { banner, about, education, contact, skills, help } from "../content.js";
+
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
-	const welcomeMessage = "Available commands: help, date, clear, about, projects, skills, experience, education, contact";
+	const welcomeMessage = banner;
 	const newOutputLine = document.createElement("div");
 	terminalOutput.appendChild(newOutputLine);
 	await animateText(newOutputLine, welcomeMessage);
@@ -9,38 +12,28 @@ export async function showWelcomeMessage() {
   export function processCommand(inputText) {
 	switch (inputText.toLowerCase()) {
 	  case "help":
-		return "Available commands: help, date, clear, about, projects, skills, experience, education, contact";
+		return help;
 	  case "date":
 		return new Date().toLocaleString();
 	  case "clear":
 		document.getElementById("terminal-output").innerHTML = "";
 		return "";
 	  case "about":
-		return "Hello, I'm [Your Name]! I'm a [Your Profession/Role] with a passion for [Your Interests].";
-	  case "projects":
-		return `Here are some of my projects:
-		  - Project 1: A brief description (GitHub: https://github.com/username/project1)
-		  - Project 2: A brief description (GitHub: https://github.com/username/project2)
-		  - Project 3: A brief description (GitHub: https://github.com/username/project3)`;
+		return about;
 	  case "skills":
-		return `Technical Skills:
-		  - JavaScript, Python, Java, etc.
-		  Soft Skills:
-		  - Communication, problem-solving, teamwork, etc.`;
+		return skills;
 	  case "experience":
-		return `Work Experience:
-		  - Company 1: Role, Duration, Responsibilities
-		  - Company 2: Role, Duration, Responsibilities`;
+		return skills;
 	  case "education":
-		return `Education:
-		  - Degree 1: Institution, Duration, Major
-		  - Degree 2: Institution, Duration, Major`;
+		return education;
 	  case "contact":
-		return `Contact Information:
-		  - Email: your.email@example.com
-		  - Phone: +1-123-456-7890
-		  - LinkedIn: https://www.linkedin.com/in/yourusername
-		  - GitHub: https://github.com/yourusername`;
+		return contact;
+	case "theme green":
+		applyTheme('Green');
+		return "Theme changed to Green.";
+	case "theme orange":
+		applyTheme('Orange');
+		return "Theme changed to Orange.";
 	  default:
 		return `Unknown command: ${inputText}`;
 	}
@@ -57,21 +50,25 @@ export async function showWelcomeMessage() {
 	  terminalInput.contentEditable = "false";
 	}
   
-	const typingSound = new Audio("sounds/typing.mp3");
+	// const typingSound = new Audio("sounds/typing.mp3");
+
+	// Calculate speed factor based on character count
+	const speedFactor = text.length <= 50 ? 1 : text.length <= 100 ? 10 : 20;
+	const adjustedDelay = delay / speedFactor;
   
 	for (const char of text) {
 	  element.textContent += char;
   
 	  if (userInteracted) {
 		// Play typing sound
-		typingSound.currentTime = 0;
-		typingSound.play().catch((error) => {
-		  console.error("Error playing typing sound:", error);
-		});
+		// typingSound.currentTime = 0;
+		// typingSound.play().catch((error) => {
+		//   console.error("Error playing typing sound:", error);
+		// });
 
 	  }
   
-	  await new Promise((resolve) => setTimeout(resolve, delay));
+	  await new Promise((resolve) => setTimeout(resolve, adjustedDelay));
 	}
   
 	if (terminalInput) {
