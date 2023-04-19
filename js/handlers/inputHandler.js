@@ -39,7 +39,9 @@ async function handleEnterKey(terminalOutput, terminalInput) {
     if (inputText.length > 0) {
       terminalInput.textContent = "";
       terminalOutput.appendChild(newOutputLine);
-      await animateText(newOutputLine, "> ", 10, terminalInput);
+
+      const inputPrefix = document.getElementById("input-prefix");
+      await animateText(newOutputLine, "> " + inputPrefix.textContent, 10, terminalInput, inputPrefix);
       await processCommand(inputText);
     }
     await animateText(newOutputLine, outputText, 10, terminalInput);

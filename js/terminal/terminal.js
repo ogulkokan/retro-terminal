@@ -1,5 +1,5 @@
 import { applyTheme } from "../settings.js";
-import { banner, about, education, contact, skills, help } from "../content.js";
+import { banner, about, education, contact, skills, help, test } from "../content.js";
 
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
@@ -28,12 +28,14 @@ export async function showWelcomeMessage() {
 		return education;
 	  case "contact":
 		return contact;
-	case "theme green":
+	  case "theme green":
 		applyTheme('Green');
 		return "Theme changed to Green.";
-	case "theme orange":
+	  case "theme orange":
 		applyTheme('Orange');
 		return "Theme changed to Orange.";
+	  case "test":
+		return test;
 	  default:
 		return `Unknown command: ${inputText}`;
 	}
@@ -45,9 +47,10 @@ export async function showWelcomeMessage() {
 	userInteracted = true;
   });
   
-  export async function animateText(element, text, delay = 10, terminalInput) {
+  export async function animateText(element, text, delay = 10, terminalInput, inputPrefix) {
 	if (terminalInput) {
 	  terminalInput.contentEditable = "false";
+	  if (inputPrefix) inputPrefix.style.display = "none";
 	}
   
 	// const typingSound = new Audio("sounds/typing.mp3");
@@ -73,6 +76,7 @@ export async function showWelcomeMessage() {
   
 	if (terminalInput) {
 	  terminalInput.contentEditable = "true";
+	  if (inputPrefix) inputPrefix.style.display = "inline";
 	}
   }
   
