@@ -36,10 +36,7 @@
       height: 100vh;
     }
   }
-  
-
-
-  
+    
   .terminal #terminal-input-wrapper {
     display: flex;
     align-items: baseline;
