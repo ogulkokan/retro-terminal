@@ -14,6 +14,13 @@
   background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
   animation: txt-shadow 1.6s infinite;
   font-size: 13px;
+  overflow: auto;
+  overflow-y: scroll;
+}
+
+/* Hide scrollbar */
+.terminal::-webkit-scrollbar {
+  display: none;
 }
 
 .terminal #terminal-output {
@@ -21,6 +28,11 @@
   font-weight: bold;
   margin-bottom: 0.5em;
   white-space: pre-wrap;  
+}
+
+.terminal {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* .terminal #terminal-output {
