@@ -25,6 +25,11 @@ export async function handleInput(event) {
   }
 }
 
+function scrollToBottom() {
+  const terminal = document.querySelector('.terminal');
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
 async function handleEnterKey(terminalOutput, terminalInput) {
   const inputText = terminalInput.innerText.trim();
   const outputText = processCommand(inputText);
@@ -37,14 +42,17 @@ async function handleEnterKey(terminalOutput, terminalInput) {
     commandIndex = commandHistory.length;
 
     if (inputText.length > 0) {
-      terminalInput.textContent = "";
+      terminalInput.innerText = "";
       terminalOutput.appendChild(newOutputLine);
 
       const inputPrefix = document.getElementById("input-prefix");
       await animateText(newOutputLine, "> " + inputPrefix.textContent, 10, terminalInput, inputPrefix);
-      await processCommand(inputText);
+      // await processCommand(inputText);
     }
     await animateText(newOutputLine, outputText, 10, terminalInput);
+    scrollToBottom(); // Add this line
+    terminalInput.innerText = "";
+    terminalInput.focus();
   }
 
   terminalInput.innerText = "";
@@ -54,17 +62,17 @@ async function handleEnterKey(terminalOutput, terminalInput) {
 function handleArrowUp(terminalInput) {
   if (commandIndex > 0) {
     commandIndex--;
-    terminalInput.innerText = commandHistory[commandIndex];
+    terminalInput.value = commandHistory[commandIndex];
   }
 }
 
 function handleArrowDown(terminalInput) {
   if (commandIndex < commandHistory.length - 1) {
     commandIndex++;
-    terminalInput.innerText = commandHistory[commandIndex];
+    terminalInput.value = commandHistory[commandIndex];
   } else if (commandIndex === commandHistory.length - 1) {
     commandIndex++;
-    terminalInput.innerText = "";
+    terminalInput.value = "";
   }
 }
 

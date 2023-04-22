@@ -7,7 +7,18 @@ export async function showWelcomeMessage() {
 	const newOutputLine = document.createElement("div");
 	terminalOutput.appendChild(newOutputLine);
 	await animateText(newOutputLine, welcomeMessage);
+	scrollToBottom();
   }
+
+  function scrollToBottom() {
+	const terminal = document.querySelector('.terminal');
+	terminal.scrollTop = terminal.scrollHeight;
+  }
+  
+//   const terminalInput = document.getElementById('terminal-input');
+//   terminalInput.addEventListener('input', () => {
+//     scrollToBottom();
+//   });
   
   export function processCommand(inputText) {
 	switch (inputText.toLowerCase()) {
@@ -61,6 +72,7 @@ export async function showWelcomeMessage() {
   
 	for (const char of text) {
 	  element.textContent += char;
+	  scrollToBottom();
   
 	  if (userInteracted) {
 		// Play typing sound

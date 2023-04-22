@@ -6,6 +6,7 @@ export function handleClick(event) {
     if (input) {
       input.focus();
     }
+    scrollToBottom(); // Add this line
   }
   
   export function theme(event) {
@@ -41,6 +42,16 @@ export function handleClick(event) {
       toggleFullscreen(false);
     }
   }
+
+  function scrollToBottom() {
+    const terminal = document.querySelector('.terminal');
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  const terminalInput = document.getElementById('terminal-input');
+  terminalInput.addEventListener('input', () => {
+    scrollToBottom();
+  });
   
 
   export function toggleFullscreen(enable) {
