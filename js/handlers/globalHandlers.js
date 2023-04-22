@@ -1,3 +1,5 @@
+import { scrollToBottom } from './utils.js';
+
 export function handleClick(event) {
     if (event) {
       event.preventDefault();
@@ -43,10 +45,10 @@ export function handleClick(event) {
     }
   }
 
-  function scrollToBottom() {
-    const terminal = document.querySelector('.terminal');
-    terminal.scrollTop = terminal.scrollHeight;
-  }
+  // function scrollToBottom() {
+  //   const terminal = document.querySelector('.terminal');
+  //   terminal.scrollTop = terminal.scrollHeight;
+  // }
 
   const terminalInput = document.getElementById('terminal-input');
   terminalInput.addEventListener('input', () => {

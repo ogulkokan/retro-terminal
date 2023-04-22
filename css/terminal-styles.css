@@ -13,7 +13,7 @@
   max-height: calc(100vh - 10em);
   background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
   animation: txt-shadow 1.6s infinite;
-  font-size: 13px;
+  font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)));
   overflow: auto;
   overflow-y: scroll;
 }
@@ -35,12 +35,6 @@
   scrollbar-width: none;
 }
 
-/* .terminal #terminal-output {
-  color: #ff0;
-  color: rgb(62, 209, 46);
-  position: relative;
-  width: 100%;
-} */
   
   @media (min-width: 768px) {
     .terminal {

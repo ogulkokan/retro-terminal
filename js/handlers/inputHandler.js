@@ -1,4 +1,5 @@
 import { processCommand, animateText } from '../terminal/terminal.js';
+import { scrollToBottom } from './utils.js';
 
 let commandHistory = [];
 let commandIndex = -1;
@@ -23,11 +24,6 @@ export async function handleInput(event) {
     event.preventDefault();
     handleTab(terminalInput);
   }
-}
-
-function scrollToBottom() {
-  const terminal = document.querySelector('.terminal');
-  terminal.scrollTop = terminal.scrollHeight;
 }
 
 async function handleEnterKey(terminalOutput, terminalInput) {
@@ -62,17 +58,17 @@ async function handleEnterKey(terminalOutput, terminalInput) {
 function handleArrowUp(terminalInput) {
   if (commandIndex > 0) {
     commandIndex--;
-    terminalInput.value = commandHistory[commandIndex];
+    terminalInput.innerText = commandHistory[commandIndex];
   }
 }
 
 function handleArrowDown(terminalInput) {
   if (commandIndex < commandHistory.length - 1) {
     commandIndex++;
-    terminalInput.value = commandHistory[commandIndex];
+    terminalInput.innerText = commandHistory[commandIndex];
   } else if (commandIndex === commandHistory.length - 1) {
     commandIndex++;
-    terminalInput.value = "";
+    terminalInput.innerText = "";
   }
 }
 

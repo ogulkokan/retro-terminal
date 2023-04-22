@@ -35,43 +35,59 @@ export function initSettings() {
     // Create a settings container
     const settingsContainer = document.createElement('div');
     settingsContainer.style.backgroundColor = 'white';
-    settingsContainer.style.padding = '20px';
-    settingsContainer.style.borderRadius = '5px';
+    settingsContainer.style.padding = '30px';
+    settingsContainer.style.borderRadius = '10px';
+    settingsContainer.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    settingsContainer.style.width = '400px';
+    settingsContainer.style.display = 'flex';
+    settingsContainer.style.flexDirection = 'column';
+    settingsContainer.style.gap = '20px';
     settingsPanel.appendChild(settingsContainer);
   
     // Add settings options
     addFontSizeOption(settingsContainer);
     addFontFamilyOption(settingsContainer);
-    // addBackgroundColorOption(settingsContainer);
-    // addTextColorOption(settingsContainer);
     addThemeOption(settingsContainer);
   
     // Add the settings panel to the body
     document.body.appendChild(settingsPanel);
   }
+
+  function createOptionGroup(container, labelText) {
+    const optionGroup = document.createElement('div');
+    optionGroup.style.display = 'flex';
+    optionGroup.style.alignItems = 'center';
+    optionGroup.style.justifyContent = 'space-between';
+    optionGroup.style.marginBottom = '10px';
+  
+    const label = document.createElement('label');
+    label.textContent = labelText;
+    label.style.fontWeight = 'bold';
+  
+    optionGroup.appendChild(label);
+    container.appendChild(optionGroup);
+  
+    return optionGroup;
+  }
   
   function addFontSizeOption(container) {
-    const label = document.createElement('label');
-    label.textContent = 'Font Size: ';
-    container.appendChild(label);
+    const optionGroup = createOptionGroup(container, 'Font Size: ');
   
     const input = document.createElement('input');
     input.type = 'number';
-    input.value = getComputedStyle(document.querySelector('.terminal')).fontSize.slice(0, -2);
+    input.value = parseInt(getComputedStyle(document.querySelector('.terminal')).fontSize);
     input.min = 10;
     input.max = 25;
+    input.style.width = '60px';
     input.addEventListener('input', (event) => {
       document.querySelector('.terminal').style.fontSize = event.target.value + 'px';
     });
   
-    container.appendChild(input);
-    container.appendChild(document.createElement('br'));
+    optionGroup.appendChild(input);
   }
   
   function addFontFamilyOption(container) {
-    const label = document.createElement('label');
-    label.textContent = 'Font Family: ';
-    container.appendChild(label);
+    const optionGroup = createOptionGroup(container, 'Font Family: ');
   
     const select = document.createElement('select');
     const fontFamilies = ['Courier New', 'Consolas', 'Roboto Mono', 'Fira Code'];
@@ -82,20 +98,28 @@ export function initSettings() {
       select.appendChild(option);
     });
   
-    select.value = getComputedStyle(document.querySelector('.terminal')).fontFamily;
+    // Get the current font family without quotes
+    const currentFontFamily = getComputedStyle(document.querySelector('.terminal')).fontFamily.replace(/["']/g, "");
+    
+    // Find and set the correct option as selected
+    select.querySelectorAll('option').forEach((option) => {
+      if (option.value === currentFontFamily) {
+        option.selected = true;
+      }
+    });
+  
     select.addEventListener('change', (event) => {
       document.querySelector('.terminal').style.fontFamily = event.target.value;
     });
   
-    container.appendChild(select);
+    optionGroup.appendChild(select);
     container.appendChild(document.createElement('br'));
   }
+  
     
   
   function addThemeOption(container) {
-    const label = document.createElement('label');
-    label.textContent = 'Theme: ';
-    container.appendChild(label);
+    const optionGroup = createOptionGroup(container, 'Theme: ');
   
     const select = document.createElement('select');
     const themes = ['Green', 'Orange'];
@@ -114,9 +138,9 @@ export function initSettings() {
       applyTheme(event.target.value);
     });
   
-    container.appendChild(select);
-    container.appendChild(document.createElement('br'));
+    optionGroup.appendChild(select);
   }
+  
   
 
   export function applyTheme(theme) {

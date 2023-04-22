@@ -2,7 +2,7 @@ import { init } from './init.js';
 import { initCursor } from './terminal/cursor.js';
 import { showWelcomeMessage, processCommand, animateText } from './terminal/terminal.js';
 import { handleClick, theme, fullscreen, globalListener } from './handlers/globalHandlers.js';
-import { initSettings } from "./settings.js";
+import { initSettings } from "./config/settings.js";
 
 document.addEventListener("DOMContentLoaded", init);
 initCursor();

@@ -1,5 +1,6 @@
-import { applyTheme } from "../settings.js";
-import { banner, about, education, contact, skills, help, test } from "../content.js";
+import { applyTheme } from "../config/settings.js";
+import { banner, about, education, contact, skills, help, test } from "../config/content.js";
+import { scrollToBottom } from '../handlers/utils.js';
 
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
@@ -8,19 +9,9 @@ export async function showWelcomeMessage() {
 	terminalOutput.appendChild(newOutputLine);
 	await animateText(newOutputLine, welcomeMessage);
 	scrollToBottom();
-  }
+}
 
-  function scrollToBottom() {
-	const terminal = document.querySelector('.terminal');
-	terminal.scrollTop = terminal.scrollHeight;
-  }
-  
-//   const terminalInput = document.getElementById('terminal-input');
-//   terminalInput.addEventListener('input', () => {
-//     scrollToBottom();
-//   });
-  
-  export function processCommand(inputText) {
+export function processCommand(inputText) {
 	switch (inputText.toLowerCase()) {
 	  case "help":
 		return help;
@@ -50,48 +41,44 @@ export async function showWelcomeMessage() {
 	  default:
 		return `Unknown command: ${inputText}`;
 	}
-  }
+}
   
-  
-  let userInteracted = false;
-  document.addEventListener("click", () => {
+
+let userInteracted = false;
+document.addEventListener("click", () => {
 	userInteracted = true;
-  });
+});
   
-  export async function animateText(element, text, delay = 10, terminalInput, inputPrefix) {
+export async function animateText(element, text, delay = 10, terminalInput, inputPrefix) {
 	if (terminalInput) {
-	  terminalInput.contentEditable = "false";
-	  if (inputPrefix) inputPrefix.style.display = "none";
+		terminalInput.contentEditable = "false";
+		if (inputPrefix) inputPrefix.style.display = "none";
 	}
-  
+
 	// const typingSound = new Audio("sounds/typing.mp3");
 
 	// Calculate speed factor based on character count
 	const speedFactor = text.length <= 50 ? 1 : text.length <= 100 ? 10 : 20;
 	const adjustedDelay = delay / speedFactor;
-  
+
 	for (const char of text) {
-	  element.textContent += char;
-	  scrollToBottom();
-  
-	  if (userInteracted) {
+		element.textContent += char;
+		scrollToBottom();
+
+		if (userInteracted) {
 		// Play typing sound
 		// typingSound.currentTime = 0;
 		// typingSound.play().catch((error) => {
 		//   console.error("Error playing typing sound:", error);
 		// });
 
-	  }
-  
-	  await new Promise((resolve) => setTimeout(resolve, adjustedDelay));
+		}
+
+		await new Promise((resolve) => setTimeout(resolve, adjustedDelay));
 	}
-  
+
 	if (terminalInput) {
-	  terminalInput.contentEditable = "true";
-	  if (inputPrefix) inputPrefix.style.display = "inline";
+		terminalInput.contentEditable = "true";
+		if (inputPrefix) inputPrefix.style.display = "inline";
 	}
-  }
-  
-  
-  
-  
+}
