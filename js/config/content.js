@@ -17,7 +17,7 @@ export const banner = `
 `;
 
 export const about = `
-    .......................................................................................
+hhek
     Hello, I'm Onur Gülkokan! After several years of studying and working in 
     a variety of fields, decided to pursue my career in the data science and software 
     development area. I successfully finished the medical systems engineering master's 
@@ -29,7 +29,6 @@ export const about = `
 `;
 
 export const education = `
-    .......................................................................................
     - Master's degree: Medical Systems Engineering
         University: Otto-von-Guericke-Universität - Magdeburg
         Specialization: Medical Computer Science
@@ -56,7 +55,6 @@ export const education = `
 `;
 
 export const contact = `
-    .......................................................................................
     * Contact Information:
         - Email: onurgulkokan@gmail.com
         - LinkedIn: https://www.linkedin.com/in/onurgulkokan/
@@ -65,7 +63,6 @@ export const contact = `
 `
 
 export const skills = `
-    .......................................................................................
     * Technical Skills:
         - Python, JavaScript,
         - Vue.js, Quasar Framework
@@ -73,13 +70,11 @@ export const skills = `
 `
 
 export const help = `
-    .......................................................................................
     * Available Commands:
         - about
         - education
         - skills
         - contact
-        - education
         - theme green
         - theme orange
     .......................................................................................

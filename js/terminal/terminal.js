@@ -42,7 +42,6 @@ export function processCommand(inputText) {
 		return `Unknown command: ${inputText}`;
 	}
 }
-  
 
 let userInteracted = false;
 document.addEventListener("click", () => {

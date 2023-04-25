@@ -1,6 +1,6 @@
 .cursor {
     display: inline-block;
-    background-color: yellow;
+    background-color: orange;
     width: 5px;
     height: 1.2em;
     animation: blink 1s steps(1, end) infinite;

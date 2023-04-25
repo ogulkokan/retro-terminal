@@ -43,10 +43,9 @@ async function handleEnterKey(terminalOutput, terminalInput) {
 
       const inputPrefix = document.getElementById("input-prefix");
       await animateText(newOutputLine, "> " + inputPrefix.textContent, 10, terminalInput, inputPrefix);
-      // await processCommand(inputText);
     }
     await animateText(newOutputLine, outputText, 10, terminalInput);
-    scrollToBottom(); // Add this line
+    scrollToBottom();
     terminalInput.innerText = "";
     terminalInput.focus();
   }

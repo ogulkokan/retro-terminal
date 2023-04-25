@@ -8,11 +8,10 @@ export function handleClick(event) {
     if (input) {
       input.focus();
     }
-    scrollToBottom(); // Add this line
+    scrollToBottom();
   }
   
   export function theme(event) {
-    // click(); // You need to import this function from the original code.
     let theme = event.target.dataset.theme;
     [...document.getElementsByClassName("theme")].forEach(b =>
       b.classList.toggle("active", false)
@@ -23,7 +22,6 @@ export function handleClick(event) {
   }
   
   export function fullscreen(event) {
-    // toggleFullscreen(); // You need to import this function from the original code.
     event.target.blur();
   }
   
@@ -44,11 +42,6 @@ export function handleClick(event) {
       toggleFullscreen(false);
     }
   }
-
-  // function scrollToBottom() {
-  //   const terminal = document.querySelector('.terminal');
-  //   terminal.scrollTop = terminal.scrollHeight;
-  // }
 
   const terminalInput = document.getElementById('terminal-input');
   terminalInput.addEventListener('input', () => {
