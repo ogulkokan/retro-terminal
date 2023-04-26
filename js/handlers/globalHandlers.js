@@ -1,15 +1,29 @@
 import { scrollToBottom } from './utils.js';
 
 export function handleClick(event) {
-    if (event) {
-      event.preventDefault();
-    }
-    let input = document.querySelector("[contenteditable='true']");
-    if (input) {
-      input.focus();
-    }
+  if (event) {
+    event.preventDefault();
+  }
+  let input = document.querySelector("[contenteditable='true']");
+  if (input) {
+    input.focus();
+  }
+
+  const terminalOutput = document.getElementById("terminal-output");
+  const isScrolledToBottom =
+    terminalOutput.scrollHeight - terminalOutput.clientHeight <=
+    terminalOutput.scrollTop + 1;
+
+  if (isScrolledToBottom) {
     scrollToBottom();
   }
+
+  // Only allow click events that originated from within the terminal container
+  if (event.target.closest(".terminal") !== null) {
+    event.stopPropagation();
+  }
+}
+
   
   export function theme(event) {
     let theme = event.target.dataset.theme;

@@ -12,34 +12,37 @@ export async function showWelcomeMessage() {
 }
 
 export function processCommand(inputText) {
+	const inputPrefix = document.getElementById("input-prefix");
+	const terminalInput = document.getElementById("terminal-input");
+	const userCommand = terminalInput.textContent;
 	switch (inputText.toLowerCase()) {
 	  case "help":
-		return help;
+		return userCommand + "\n" + help;
 	  case "date":
-		return new Date().toLocaleString();
+		return userCommand + "\n" + new Date().toLocaleString();
 	  case "clear":
 		document.getElementById("terminal-output").innerHTML = "";
 		return "";
 	  case "about":
-		return about;
+		return userCommand + "\n" + about;
 	  case "skills":
-		return skills;
+		return userCommand + "\n" + skills;
 	  case "experience":
-		return skills;
+		return userCommand + "\n" + skills;
 	  case "education":
-		return education;
+		return userCommand + "\n" + education;
 	  case "contact":
-		return contact;
+		return userCommand + "\n" + contact;
 	  case "theme green":
 		applyTheme('Green');
-		return "Theme changed to Green.";
+		return userCommand + "\n" + "Theme changed to Green.";
 	  case "theme orange":
 		applyTheme('Orange');
-		return "Theme changed to Orange.";
+		return userCommand + "\n" + "Theme changed to Orange.";
 	  case "test":
-		return test;
+		return userCommand + "\n" + test;
 	  default:
-		return `Unknown command: ${inputText}`;
+		return userCommand + "\n" + `Unknown command: ${inputText}`;
 	}
 }
 

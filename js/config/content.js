@@ -17,14 +17,15 @@ export const banner = `
 `;
 
 export const about = `
-hhek
-    Hello, I'm Onur Gülkokan! After several years of studying and working in 
-    a variety of fields, decided to pursue my career in the data science and software 
-    development area. I successfully finished the medical systems engineering master's 
-    program and specialized in medical computer science. 
-    
-    I am a versatile person and always eager to learn new skills regardless 
-    of a specific area.
+
+    * About Me:
+        Hello, I'm Onur Gülkokan! After several years of studying and working in 
+        a variety of fields, decided to pursue my career in the data science and software 
+        development area. I successfully finished the medical systems engineering master's 
+        program and specialized in medical computer science. 
+        
+        I am a versatile person and always eager to learn new skills regardless 
+        of a specific area.
     .......................................................................................
 `;
 

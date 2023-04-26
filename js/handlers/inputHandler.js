@@ -42,7 +42,7 @@ async function handleEnterKey(terminalOutput, terminalInput) {
       terminalOutput.appendChild(newOutputLine);
 
       const inputPrefix = document.getElementById("input-prefix");
-      await animateText(newOutputLine, "> " + inputPrefix.textContent, 10, terminalInput, inputPrefix);
+      await animateText(newOutputLine, inputPrefix.textContent, 10, terminalInput, inputPrefix);
     }
     await animateText(newOutputLine, outputText, 10, terminalInput);
     scrollToBottom();
