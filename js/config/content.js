@@ -72,17 +72,21 @@ export const skills = `
 
 export const help = `
     * Available Commands:
-        - about
-        - education
-        - skills
-        - contact
-        - theme green
-        - theme orange
+      - help: Display a list of available commands.
+      - date: Show the current date and time.
+      - clear: Clear the terminal output.
+      - theme green: Change the terminal theme to green.
+      - theme orange: Change the terminal theme to orange.
+      - contact: Show my contact information.
+      - about: Learn more about me.
+      - skills: Explore my skills and technologies.
+      - education: Discover my educational background.
     .......................................................................................
 `
 
 
 export const test = `
+-------------------------------------------
             .mmMMMMMMMMMmm.            
          .mmMMMMMMMMMMMMMMMMMmm.        
       .mmMMMMMMMMMMMMMMMMMMMMMMMMm.     
@@ -98,44 +102,6 @@ export const test = `
      .....               ..........     
         ........         ........       
             ....         ....       
-.------------------------------------------------------------------------------.
-|                             .mmMMMMMMMMMMMMMmm.                              |
-|                         .mMMMMMMMMMMMMMMMMMMMMMMMm.                          |
-|                      .mMMMMMMMMMMMMMMMMMMMMMMMMMMMMMm.                       |
-|                    .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.                     |
-|                  .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.                   |
-|                  MMMMMMMM'  "MMMMM"""""""MMMM""  'MMMMMMMM                   |
-|                MMMMMMMMM                           MMMMMMMMM                 |
-|               MMMMMMMMMM:                         :MMMMMMMMMM                |
-|              .MMMMMMMMMM                           MMMMMMMMMM.               |
-|              MMMMMMMMM"                             "MMMMMMMMM               |
-|              MMMMMMMMM                               MMMMMMMMM               |
-|              MMMMMMMMM                               MMMMMMMMM               |
-|              MMMMMMMMMM                             MMMMMMMMMM               |
-|               MMMMMMMMMM                           MMMMMMMMMM                |
-|               MMMMMMMMMMMM.                     .MMMMMMMMMMMM                |
-|                MMMMMM  MMMMMMMMMM         MMMMMMMMMMMMMMMMMM                 |
-|                 MMMMMM  'MMMMMMM           MMMMMMMMMMMMMMMM                  |
-|                   MMMMMM  "MMMMM           MMMMMMMMMMMMMM                    |
-|                     MMMMMm                 MMMMMMMMMMMM                      |
-|                       "MMMMMMMMM           MMMMMMMMM"                        |
-|                          "MMMMMM           MMMMMM"                           |
-|                              ""M           M""                               |
-'------------------------------------------------------------------------------'
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░████░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░████░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░▄▄▄▄▄▄▄▄▄░░░░░░░░░
-░░░░░░░████░░████████████░░░░░░░
-░░░░░░░████░░█████▀▀▀█████░░░░░░
-░░░░░░░████░░█████░░░░████░░░░░░
-░░░░░░░████░░█████░░░░████░░░░░░
-░░░░░░░████░░█████░░░░████░░░░░░
-░░░░░░░████░░█████░░░░████░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+-------------------------------------------
 `
