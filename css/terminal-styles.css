@@ -16,7 +16,7 @@
   font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)));
   overflow: auto;
   overflow-y: scroll;
-  position: relative;
+  /* position: relative; */
 }
 
 /* Hide scrollbar */
