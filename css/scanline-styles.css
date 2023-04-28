@@ -12,6 +12,7 @@
     opacity: 0.1;
     position: absolute;
     bottom: 100%;
+    left: 0;
     animation: scanline 6s linear infinite;
 }
 @keyframes scanline {

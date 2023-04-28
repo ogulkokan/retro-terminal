@@ -2,6 +2,11 @@
 /* background: hsla(30, 57%, 14%, 1); */
 /* background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%); */
 
+.terminal-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
 .terminal {
   background-color: rgba(0, 0, 0, 0.75);
   padding: 1em;
@@ -63,16 +68,22 @@
   pointer-events: none;
 }
 
-.terminal::after {
+.terminal-content {
+  position: relative;
+  z-index: 3;
+}
+
+.grain {
   animation: grain 8s steps(10) infinite;
   background-image: url(https://i.ibb.co/6Rw6ysv/noise.png);
-  content: "";
   height: 300%;
-  left: -50%;
+  left: -30%;
   opacity: 0.3;
   position: absolute;
   top: -110%;
-  width: 300%;
+  width: 200%;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .terminal #terminal-input {
