@@ -1,13 +1,21 @@
 .cursor {
-    display: inline-block;
-    background-color: orange;
-    width: 5px;
-    height: 1.2em;
-    animation: blink 1s steps(1, end) infinite;
+  display: inline-block;
+  width: 5px;
+  height: 1.2em;
+  position: relative;
+}
+
+.cursor::before {
+  content: "";
+  position: absolute;
+  background-color: orange;
+  width: 100%;
+  height: 100%;
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
   }
-  
-  @keyframes blink {
-    50% {
-      background-color: transparent;
-    }
-  }
+}

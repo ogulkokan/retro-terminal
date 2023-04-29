@@ -22,7 +22,13 @@ export function handleClick(event) {
   if (event.target.closest(".terminal") !== null) {
     event.stopPropagation();
   }
+
+  // Set focus back to the input field
+  setTimeout(() => {
+    input.focus();
+  }, 0);
 }
+
 
   
   export function theme(event) {
