@@ -1,3 +1,7 @@
+export const email = "onurgulkokan@gmail.com";
+export const linkedinURL = "https://www.linkedin.com/in/onurgulkokan/";
+export const githubURL = "https://github.com/ogulkokan";
+
 // Banner text ascii art
 export const banner = `
     Initializing RetroShell 2000 v0.1
@@ -57,9 +61,14 @@ export const education = `
 
 export const contact = `
     * Contact Information:
-        - Email: onurgulkokan@gmail.com
-        - LinkedIn: https://www.linkedin.com/in/onurgulkokan/
-        - GitHub: https://github.com/ogulkokan
+        - Email: ${email}
+        - LinkedIn: ${linkedinURL}
+        - GitHub: ${githubURL}
+
+    * Available Commands for contact information:
+        - contact email: Compose a new email to my address using your default email client.
+        - contact linkedin: Open my LinkedIn profile in a new window.
+        - contact github: Open my GitHub profile in a new window.
     .......................................................................................
 `
 

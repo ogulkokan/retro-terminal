@@ -1,5 +1,5 @@
 import { applyTheme } from "../config/settings.js";
-import { banner, about, education, contact, skills, help, test } from "../config/content.js";
+import { banner, about, education, contact, skills, help, test, linkedinURL, githubURL, email } from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
 
 export async function showWelcomeMessage() {
@@ -15,6 +15,8 @@ export function processCommand(inputText) {
 	const inputPrefix = document.getElementById("input-prefix");
 	const terminalInput = document.getElementById("terminal-input");
 	const userCommand = terminalInput.textContent;
+	let response = '';
+
 	switch (inputText.toLowerCase()) {
 	  case "help":
 		return userCommand + "\n" + help;
@@ -33,6 +35,16 @@ export function processCommand(inputText) {
 		return userCommand + "\n" + education;
 	  case "contact":
 		return userCommand + "\n" + contact;
+	  case "contact linkedin":
+		window.open(linkedinURL, "_blank");
+		break;
+	  case "contact github":
+		window.open(githubURL, "_blank");
+		break;
+	  case "contact email":
+		window.open(`mailto:${email}`, "_blank");
+		response = userCommand + "\n" + "Opening email client to send an email.";
+		break;
 	  case "theme green":
 		applyTheme('Green');
 		return userCommand + "\n" + "Theme changed to Green.";
@@ -44,6 +56,7 @@ export function processCommand(inputText) {
 	  default:
 		return userCommand + "\n" + `Unknown command: ${inputText}`;
 	}
+	return response;
 }
 
 let userInteracted = false;
