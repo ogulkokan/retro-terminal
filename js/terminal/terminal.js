@@ -1,11 +1,22 @@
 import { applyTheme } from "../config/settings.js";
-import { banner, about, education, contact, skills, help, test, linkedinURL, githubURL, email } from "../config/content.js";
+import {
+	getBanner,
+	getAbout,
+	getEducation,
+	getContact,
+	getSkills,
+	getHelp,
+	getTest,
+	getLinkedInURL,
+	getGitHubURL,
+	getEmail
+} from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
 import { playTypingSound } from '../audio/audioManager.js';
 
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
-	const welcomeMessage = banner;
+	const welcomeMessage = getBanner();
 	const newOutputLine = document.createElement("div");
 	terminalOutput.appendChild(newOutputLine);
 	await animateText(newOutputLine, welcomeMessage);
@@ -20,30 +31,30 @@ export function processCommand(inputText) {
 
 	switch (inputText.toLowerCase()) {
 	  case "help":
-		return userCommand + "\n" + help;
+		return userCommand + "\n" + getHelp();
 	  case "date":
 		return userCommand + "\n" + new Date().toLocaleString();
 	  case "clear":
 		document.getElementById("terminal-output").innerHTML = "";
 		return "";
 	  case "about":
-		return userCommand + "\n" + about;
+		return userCommand + "\n" + getAbout();
 	  case "skills":
-		return userCommand + "\n" + skills;
+		return userCommand + "\n" + getSkills();
 	  case "experience":
-		return userCommand + "\n" + skills;
+		return userCommand + "\n" + getSkills();
 	  case "education":
-		return userCommand + "\n" + education;
+		return userCommand + "\n" + getEducation();
 	  case "contact":
-		return userCommand + "\n" + contact;
+		return userCommand + "\n" + getContact();
 	  case "contact linkedin":
-		window.open(linkedinURL, "_blank");
+		window.open(getLinkedInURL(), "_blank");
 		break;
 	  case "contact github":
-		window.open(githubURL, "_blank");
+		window.open(getGitHubURL(), "_blank");
 		break;
 	  case "contact email":
-		window.open(`mailto:${email}`, "_blank");
+		window.open(`mailto:${getEmail()}`, "_blank");
 		response = userCommand + "\n" + "Opening email client to send an email.";
 		break;
 	  case "theme green":
@@ -53,7 +64,7 @@ export function processCommand(inputText) {
 		applyTheme('Orange');
 		return userCommand + "\n" + "Theme changed to Orange.";
 	  case "test":
-		return userCommand + "\n" + test;
+		return userCommand + "\n" + getTest();
 	  default:
 		return userCommand + "\n" + `Unknown command: ${inputText}`;
 	}

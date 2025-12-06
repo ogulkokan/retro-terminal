@@ -47,26 +47,55 @@ All settings are automatically saved to your browser and persist across sessions
 
 ## Customization
 
-### For GitHub Template Users
+### For Forkers & Template Users
 
-1. Fork this repository
-2. Edit `config.json` to customize your content:
-   - Update personal information (name, email, LinkedIn, GitHub)
-   - Modify terminal content (about, education, skills)
-   - Customize banner ASCII art
-3. Commit and push changes
-4. Enable GitHub Pages in repository settings
-5. Visit your personalized terminal at `https://yourusername.github.io/retro-terminal/`
+This project is designed to be easily customizable! Follow these steps to make it your own:
 
-### Configuration File
+1. **Fork this repository** on GitHub
+2. **Edit `config.json`** - this is the only file you need to change!
+3. **Commit and push** your changes
+4. **Enable GitHub Pages** in repository settings (Settings → Pages → Source: main branch)
+5. **Visit your terminal** at `https://yourusername.github.io/retro-terminal/`
 
-All personal content is configured in `config.json`. The file includes:
-- **personal:** Contact information (name, email, social links)
-- **terminal:** Terminal settings (title, prompt, default theme)
-- **content:** All command responses (banner, about, education, skills, help)
-- **settings:** Default settings (sound, fonts, themes)
+### Configuration Guide
 
-Edit this file to make the terminal your own!
+All personal content is configured in `config.json`. The file uses arrays for multiline content to keep it readable and easy to edit.
+
+#### Structure:
+
+```json
+{
+  "personal": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "linkedin": "https://www.linkedin.com/in/yourprofile/",
+    "github": "https://github.com/yourusername"
+  },
+  "content": {
+    "banner": ["Line 1", "Line 2", "..."],
+    "about": ["Your bio", "..."],
+    "education": ["Your degrees", "..."],
+    "skills": ["Your skills", "..."]
+  }
+}
+```
+
+#### Quick Tips:
+
+- **Arrays = Multiple lines:** Each item in an array becomes a line in the terminal
+- **Template variables:** Use `{email}`, `{linkedin}`, `{github}`, `{name}` in content - they'll be auto-replaced
+- **Banner ASCII art:** Use a tool like [patorjk.com](http://patorjk.com/software/taag/) to generate ASCII art
+- **Open `config.json`** to see the complete structure with all available options
+
+#### What You Can Customize:
+
+- ✏️ **Personal Info:** Name, email, social links
+- 🎨 **Banner:** Welcome message and ASCII art
+- 📝 **Content:** About, education, skills, contact info
+- ⚙️ **Settings:** Default theme, fonts, sound settings
+- 🎯 **Terminal:** Title, prompt style
+
+No JavaScript knowledge required - just edit JSON and you're done!
 
 ### References
 * Idea: https://github.com/andersevenrud/retro-css-shell-demo

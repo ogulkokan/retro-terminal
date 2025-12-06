@@ -7,13 +7,18 @@ import { initAudio } from './audio/audioManager.js';
 import { loadConfig } from './config/configLoader.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Load config first - required for content and settings
   await loadConfig();
+
+  // Initialize components after config is loaded
   init();
   initAudio();
+  showWelcomeMessage();
+  initSettings();
 });
+
+// These don't depend on config so can run immediately
 initCursor();
-showWelcomeMessage();
-initSettings();
 
 document.addEventListener("keydown", globalListener);
 
