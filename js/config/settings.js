@@ -1,144 +1,234 @@
+import { saveSettings, loadSettings, clearSettings } from './storage.js';
+
+let currentSettings = {
+  theme: 'Orange',
+  fontSize: 16,
+  fontFamily: 'Courier New',
+  soundEnabled: true,
+  volume: 0.3
+};
+
 export function initSettings() {
+  // Load saved settings
+  const savedSettings = loadSettings();
+  if (savedSettings) {
+    currentSettings = { ...currentSettings, ...savedSettings };
+    applyLoadedSettings(currentSettings);
+  }
+
+  // Create settings button with retro style
   const settingsButton = document.createElement('button');
-  settingsButton.textContent = 'Settings';
-  settingsButton.style.position = 'fixed';
-  settingsButton.style.top = '10px';
-  settingsButton.style.right = '10px';
+  settingsButton.textContent = '⚙ Settings';
+  settingsButton.className = 'settings-button';
   document.body.appendChild(settingsButton);
 
-  settingsButton.addEventListener('click', () => {
-    // Open the settings panel
-    openSettingsPanel();
-  });
+  settingsButton.addEventListener('click', openSettingsPanel);
 }
-  
-function openSettingsPanel() {
-  // Create a settings panel
-  const settingsPanel = document.createElement('div');
-  settingsPanel.style.position = 'fixed';
-  settingsPanel.style.top = '0';
-  settingsPanel.style.left = '0';
-  settingsPanel.style.width = '100%';
-  settingsPanel.style.height = '100%';
-  settingsPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  settingsPanel.style.display = 'flex';
-  settingsPanel.style.justifyContent = 'center';
-  settingsPanel.style.alignItems = 'center';
 
-  // Close the settings panel when clicked outside
-  settingsPanel.addEventListener('click', (event) => {
-    if (event.target === settingsPanel) {
-      settingsPanel.remove();
+function applyLoadedSettings(settings) {
+  applyTheme(settings.theme);
+
+  const terminal = document.querySelector('.terminal');
+  if (terminal) {
+    terminal.style.fontSize = settings.fontSize + 'px';
+    terminal.style.fontFamily = settings.fontFamily;
+  }
+
+  // Audio settings will be applied by audioManager when it initializes
+}
+
+function openSettingsPanel() {
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'settings-overlay';
+
+  // Create panel container
+  const panel = document.createElement('div');
+  panel.className = 'settings-panel';
+
+  // Add scanline effect
+  const scanline = document.createElement('div');
+  scanline.className = 'scanline-effect';
+  panel.appendChild(scanline);
+
+  // Create content area
+  const content = document.createElement('div');
+  content.className = 'settings-content';
+
+  // Add all option groups
+  addThemeOption(content);
+  addFontSizeOption(content);
+  addFontFamilyOption(content);
+  addSoundOption(content);
+
+  // Add button row
+  const buttonRow = document.createElement('div');
+  buttonRow.className = 'settings-buttons';
+
+  const saveButton = createButton('Save & Close', 'primary', () => {
+    saveSettings(currentSettings);
+    closePanel();
+  });
+
+  const resetButton = createButton('Reset', 'secondary', () => {
+    if (confirm('Reset all settings to defaults?')) {
+      clearSettings();
+      currentSettings = {
+        theme: 'Orange',
+        fontSize: 16,
+        fontFamily: 'Courier New',
+        soundEnabled: true,
+        volume: 0.3
+      };
+      applyLoadedSettings(currentSettings);
+      closePanel();
     }
   });
-  
-  // Create a settings container
-  const settingsContainer = document.createElement('div');
-  settingsContainer.style.backgroundColor = 'white';
-  settingsContainer.style.padding = '30px';
-  settingsContainer.style.borderRadius = '10px';
-  settingsContainer.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-  settingsContainer.style.width = '400px';
-  settingsContainer.style.display = 'flex';
-  settingsContainer.style.flexDirection = 'column';
-  settingsContainer.style.gap = '20px';
-  settingsPanel.appendChild(settingsContainer);
 
-  // Add settings options
-  addFontSizeOption(settingsContainer);
-  addFontFamilyOption(settingsContainer);
-  addThemeOption(settingsContainer);
+  const cancelButton = createButton('Cancel', 'secondary', closePanel);
 
-  // Add the settings panel to the body
-  document.body.appendChild(settingsPanel);
+  buttonRow.appendChild(saveButton);
+  buttonRow.appendChild(resetButton);
+  buttonRow.appendChild(cancelButton);
+
+  content.appendChild(buttonRow);
+  panel.appendChild(content);
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+
+  // Close on overlay click
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) {
+      closePanel();
+    }
+  });
+
+  // Close on ESC key
+  const escHandler = (event) => {
+    if (event.key === 'Escape') {
+      closePanel();
+      document.removeEventListener('keydown', escHandler);
+    }
+  };
+  document.addEventListener('keydown', escHandler);
+
+  function closePanel() {
+    overlay.remove();
+  }
+}
+
+function createButton(text, type, onClick) {
+  const button = document.createElement('button');
+  button.textContent = text;
+  button.className = `settings-button-action ${type}`;
+  button.addEventListener('click', onClick);
+  return button;
 }
 
 function createOptionGroup(container, labelText) {
   const optionGroup = document.createElement('div');
-  optionGroup.style.display = 'flex';
-  optionGroup.style.alignItems = 'center';
-  optionGroup.style.justifyContent = 'space-between';
-  optionGroup.style.marginBottom = '10px';
+  optionGroup.className = 'settings-option';
 
   const label = document.createElement('label');
   label.textContent = labelText;
-  label.style.fontWeight = 'bold';
 
   optionGroup.appendChild(label);
   container.appendChild(optionGroup);
 
   return optionGroup;
 }
-  
+
 function addFontSizeOption(container) {
-  const optionGroup = createOptionGroup(container, 'Font Size: ');
+  const optionGroup = createOptionGroup(container, 'Font Size:');
 
   const input = document.createElement('input');
   input.type = 'number';
-  input.value = parseInt(getComputedStyle(document.querySelector('.terminal')).fontSize);
+  input.value = currentSettings.fontSize;
   input.min = 10;
   input.max = 25;
-  input.style.width = '60px';
+  input.step = 0.5;
+
   input.addEventListener('input', (event) => {
-    document.querySelector('.terminal').style.fontSize = event.target.value + 'px';
+    const newSize = parseFloat(event.target.value);
+    const terminal = document.querySelector('.terminal');
+    if (terminal) {
+      terminal.style.fontSize = newSize + 'px';
+    }
+    currentSettings.fontSize = newSize;
   });
 
   optionGroup.appendChild(input);
 }
-  
+
 function addFontFamilyOption(container) {
-  const optionGroup = createOptionGroup(container, 'Font Family: ');
+  const optionGroup = createOptionGroup(container, 'Font Family:');
 
   const select = document.createElement('select');
   const fontFamilies = ['Courier New', 'Consolas', 'Roboto Mono', 'Fira Code'];
+
   fontFamilies.forEach((fontFamily) => {
     const option = document.createElement('option');
     option.textContent = fontFamily;
     option.value = fontFamily;
+    if (fontFamily === currentSettings.fontFamily) {
+      option.selected = true;
+    }
     select.appendChild(option);
   });
 
-  // Get the current font family without quotes
-  const currentFontFamily = getComputedStyle(document.querySelector('.terminal')).fontFamily.replace(/["']/g, "");
-  
-  // Find and set the correct option as selected
-  select.querySelectorAll('option').forEach((option) => {
-    if (option.value === currentFontFamily) {
-      option.selected = true;
-    }
-  });
-
   select.addEventListener('change', (event) => {
-    document.querySelector('.terminal').style.fontFamily = event.target.value;
+    const newFont = event.target.value;
+    const terminal = document.querySelector('.terminal');
+    if (terminal) {
+      terminal.style.fontFamily = newFont;
+    }
+    currentSettings.fontFamily = newFont;
   });
 
   optionGroup.appendChild(select);
-  container.appendChild(document.createElement('br'));
 }
-  
-    
-  
+
 function addThemeOption(container) {
-  const optionGroup = createOptionGroup(container, 'Theme: ');
+  const optionGroup = createOptionGroup(container, 'Color Theme:');
 
   const select = document.createElement('select');
   const themes = ['Green', 'Orange'];
+
   themes.forEach((theme) => {
     const option = document.createElement('option');
     option.textContent = theme;
     option.value = theme;
+    if (theme === currentSettings.theme) {
+      option.selected = true;
+    }
     select.appendChild(option);
   });
 
-  // Set the default theme based on the current background color
-  const currentBackgroundColor = getComputedStyle(document.querySelector('.terminal')).backgroundColor;
-  select.value = currentBackgroundColor === 'rgba(5, 50, 30, 1)' ? 'Green' : 'Orange';
-
   select.addEventListener('change', (event) => {
-    applyTheme(event.target.value);
+    const newTheme = event.target.value;
+    applyTheme(newTheme);
+    currentSettings.theme = newTheme;
   });
 
   optionGroup.appendChild(select);
+}
+
+function addSoundOption(container) {
+  const optionGroup = createOptionGroup(container, 'Typing Sounds:');
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = currentSettings.soundEnabled;
+
+  checkbox.addEventListener('change', (event) => {
+    currentSettings.soundEnabled = event.target.checked;
+    // Update audio manager if it exists
+    if (window.audioManager && window.audioManager.setSoundEnabled) {
+      window.audioManager.setSoundEnabled(event.target.checked);
+    }
+  });
+
+  optionGroup.appendChild(checkbox);
 }
 
 export function applyTheme(theme) {
@@ -147,19 +237,21 @@ export function applyTheme(theme) {
   const terminalOutput = document.querySelector('#terminal-output');
   const inputPrefix = document.querySelector('#input-prefix');
 
+  if (!terminal) return;
+
   if (theme === 'Green') {
     terminal.style.background = '#05321e';
     terminal.style.backgroundImage = 'radial-gradient(ellipse, #05321e 0%, #050505 90%)';
-    terminalInput.style.color = 'rgb(62, 209, 46)';
-    terminalOutput.style.color = 'rgb(62, 209, 46)';
-    inputPrefix.style.color = 'rgb(62, 209, 46)';
+    if (terminalInput) terminalInput.style.color = 'rgb(62, 209, 46)';
+    if (terminalOutput) terminalOutput.style.color = 'rgb(62, 209, 46)';
+    if (inputPrefix) inputPrefix.style.color = 'rgb(62, 209, 46)';
     document.documentElement.style.setProperty('--cursor-color', 'rgb(62, 209, 46)');
   } else if (theme === 'Orange') {
     terminal.style.background = 'hsla(30, 57%, 14%, 1)';
     terminal.style.backgroundImage = 'radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%)';
-    terminalInput.style.color = '#FFA128';
-    terminalOutput.style.color = '#FFA128';
-    inputPrefix.style.color = '#FFA128';
+    if (terminalInput) terminalInput.style.color = '#FFA128';
+    if (terminalOutput) terminalOutput.style.color = '#FFA128';
+    if (inputPrefix) inputPrefix.style.color = '#FFA128';
     document.documentElement.style.setProperty('--cursor-color', '#FFA128');
   }
 }

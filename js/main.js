@@ -3,8 +3,14 @@ import { initCursor } from './terminal/cursor.js';
 import { showWelcomeMessage, processCommand, animateText } from './terminal/terminal.js';
 import { handleClick, theme, fullscreen, globalListener } from './handlers/globalHandlers.js';
 import { initSettings } from "./config/settings.js";
+import { initAudio } from './audio/audioManager.js';
+import { loadConfig } from './config/configLoader.js';
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadConfig();
+  init();
+  initAudio();
+});
 initCursor();
 showWelcomeMessage();
 initSettings();

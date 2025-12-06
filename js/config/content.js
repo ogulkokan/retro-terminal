@@ -1,9 +1,58 @@
+import { getConfig } from './configLoader.js';
+
+// Getter functions that read from config
+export function getEmail() {
+  const config = getConfig();
+  return config?.personal?.email || "onurgulkokan@gmail.com";
+}
+
+export function getLinkedInURL() {
+  const config = getConfig();
+  return config?.personal?.linkedin || "https://www.linkedin.com/in/onurgulkokan/";
+}
+
+export function getGitHubURL() {
+  const config = getConfig();
+  return config?.personal?.github || "https://github.com/ogulkokan";
+}
+
+export function getBanner() {
+  const config = getConfig();
+  return config?.content?.banner || defaultBanner;
+}
+
+export function getAbout() {
+  const config = getConfig();
+  return config?.content?.about || defaultAbout;
+}
+
+export function getEducation() {
+  const config = getConfig();
+  return config?.content?.education || defaultEducation;
+}
+
+export function getSkills() {
+  const config = getConfig();
+  return config?.content?.skills || defaultSkills;
+}
+
+export function getHelp() {
+  const config = getConfig();
+  return config?.content?.help || defaultHelp;
+}
+
+export function getTest() {
+  const config = getConfig();
+  return config?.content?.test || defaultTest;
+}
+
+// Backward compatibility - direct exports
 export const email = "onurgulkokan@gmail.com";
 export const linkedinURL = "https://www.linkedin.com/in/onurgulkokan/";
 export const githubURL = "https://github.com/ogulkokan";
 
-// Banner text ascii art
-export const banner = `
+// Default values
+const defaultBanner = `
     Initializing RetroShell 2000 v0.1
     Copyright (c) 2023 Onur Gulkokan <onurgulkokan@gmail.com>
     .............................................................................
@@ -20,7 +69,10 @@ export const banner = `
     Type 'help' for a list of available commands.
 `;
 
-export const about = `
+// Expose defaults as named exports for backward compatibility
+export const banner = defaultBanner;
+
+const defaultAbout = `
 
     * About Me:
         Hello, I'm Onur Gülkokan! After several years of studying and working in 
@@ -33,7 +85,9 @@ export const about = `
     .......................................................................................
 `;
 
-export const education = `
+export const about = defaultAbout;
+
+const defaultEducation = `
     - Master's degree: Medical Systems Engineering
         University: Otto-von-Guericke-Universität - Magdeburg
         Specialization: Medical Computer Science
@@ -59,7 +113,9 @@ export const education = `
     .......................................................................................
 `;
 
-export const contact = `
+export const education = defaultEducation;
+
+const defaultContact = `
     * Contact Information:
         - Email: ${email}
         - LinkedIn: ${linkedinURL}
@@ -70,16 +126,20 @@ export const contact = `
         - contact linkedin: Open my LinkedIn profile in a new window.
         - contact github: Open my GitHub profile in a new window.
     .......................................................................................
-`
+`;
 
-export const skills = `
+export const contact = defaultContact;
+
+const defaultSkills = `
     * Technical Skills:
         - Python, JavaScript,
         - Vue.js, Quasar Framework
     .......................................................................................
-`
+`;
 
-export const help = `
+export const skills = defaultSkills;
+
+const defaultHelp = `
     * Available Commands:
       - help: Display a list of available commands.
       - date: Show the current date and time.
@@ -91,10 +151,11 @@ export const help = `
       - skills: Explore my skills and technologies.
       - education: Discover my educational background.
     .......................................................................................
-`
+`;
 
+export const help = defaultHelp;
 
-export const test = `
+const defaultTest = `
 -------------------------------------------
             .mmMMMMMMMMMmm.            
          .mmMMMMMMMMMMMMMMMMMmm.        
@@ -110,7 +171,9 @@ export const test = `
     ....  ......         ............   
      .....               ..........     
         ........         ........       
-            ....         ....       
+            ....         ....
 
 -------------------------------------------
-`
+`;
+
+export const test = defaultTest;

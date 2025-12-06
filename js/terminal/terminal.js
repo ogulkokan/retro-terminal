@@ -1,6 +1,7 @@
 import { applyTheme } from "../config/settings.js";
 import { banner, about, education, contact, skills, help, test, linkedinURL, githubURL, email } from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
+import { playTypingSound } from '../audio/audioManager.js';
 
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
@@ -81,12 +82,8 @@ export async function animateText(element, text, delay = 10, terminalInput, inpu
 		scrollToBottom();
 
 		if (userInteracted) {
-		// Play typing sound
-		// typingSound.currentTime = 0;
-		// typingSound.play().catch((error) => {
-		//   console.error("Error playing typing sound:", error);
-		// });
-
+			// Play typing sound
+			playTypingSound();
 		}
 
 		await new Promise((resolve) => setTimeout(resolve, adjustedDelay));

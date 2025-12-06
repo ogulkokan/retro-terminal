@@ -30,8 +30,43 @@ https://ogulkokan.github.io/retro-terminal/
 * **Autocomplete:** Suggests possible commands as users start typing, similar to real terminals.
 * **Command history:** Users can navigate through their previously entered commands using the arrow keys.
 * **Customizable appearance:** Allows users to customize the terminal's appearance, such as changing the font size, font family, background color, and text color.
+* **Settings persistence:** Your preferences are saved automatically to browser localStorage.
+* **Typing sound effects:** Optional keyboard typing sounds for enhanced immersion.
+* **Configuration file support:** Easy customization via config.json for GitHub template usage.
 * **Mobile-friendly:** Fully responsive design that works well on mobile devices.
-* **ToDo:** Typing sound effects: Subtle typing sound effects and animations make the terminal feel more engaging and realistic.
+
+## Settings
+
+Click the **⚙ Settings** button in the top-right to customize:
+- **Color Theme:** Green or Orange
+- **Font Family:** Courier New, Consolas, Roboto Mono, Fira Code
+- **Font Size:** 10-25px
+- **Typing Sounds:** Enable/disable keyboard sound effects
+
+All settings are automatically saved to your browser and persist across sessions.
+
+## Customization
+
+### For GitHub Template Users
+
+1. Fork this repository
+2. Edit `config.json` to customize your content:
+   - Update personal information (name, email, LinkedIn, GitHub)
+   - Modify terminal content (about, education, skills)
+   - Customize banner ASCII art
+3. Commit and push changes
+4. Enable GitHub Pages in repository settings
+5. Visit your personalized terminal at `https://yourusername.github.io/retro-terminal/`
+
+### Configuration File
+
+All personal content is configured in `config.json`. The file includes:
+- **personal:** Contact information (name, email, social links)
+- **terminal:** Terminal settings (title, prompt, default theme)
+- **content:** All command responses (banner, about, education, skills, help)
+- **settings:** Default settings (sound, fonts, themes)
+
+Edit this file to make the terminal your own!
 
 ### References
 * Idea: https://github.com/andersevenrud/retro-css-shell-demo
