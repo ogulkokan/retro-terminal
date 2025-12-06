@@ -19,7 +19,7 @@
     "test": "-------------------------------------------\n            .mmMMMMMMMMMmm.\n         .mmMMMMMMMMMMMMMMMMMmm.\n      .mmMMMMMMMMMMMMMMMMMMMMMMMMm.\n    ......    .............    ......\n   .......                     .......\n  ........                     ........\n ........                       .......\n .......                         .......\n ........                       ........\n  ........                     ........\n   .........                ..........\n    ....  ......         ............\n     .....               ..........\n        ........         ........\n            ....         ....\n\n-------------------------------------------"
   },
   "settings": {
-    "enableSound": true,
+    "enableSound": false,
     "soundVolume": 0.3,
     "defaultFontSize": 16,
     "defaultFontFamily": "Courier New",

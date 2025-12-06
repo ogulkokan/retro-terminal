@@ -5,7 +5,14 @@ let currentSettings = {
   fontSize: 16,
   fontFamily: 'Courier New',
   soundEnabled: true,
-  volume: 0.3
+  volume: 0.3,
+  crtEffects: {
+    chromatic: true,
+    flicker: true,
+    glow: true,
+    vignette: true,
+    curvature: false
+  }
 };
 
 export function initSettings() {
@@ -32,6 +39,11 @@ function applyLoadedSettings(settings) {
   if (terminal) {
     terminal.style.fontSize = settings.fontSize + 'px';
     terminal.style.fontFamily = settings.fontFamily;
+  }
+
+  // Apply CRT effects
+  if (settings.crtEffects) {
+    applyCRTEffects();
   }
 
   // Audio settings will be applied by audioManager when it initializes
@@ -61,6 +73,9 @@ function openSettingsPanel() {
   addFontFamilyOption(content);
   addSoundOption(content);
 
+  // Add CRT Effects section
+  addCRTEffectsSection(content);
+
   // Add button row
   const buttonRow = document.createElement('div');
   buttonRow.className = 'settings-buttons';
@@ -78,7 +93,14 @@ function openSettingsPanel() {
         fontSize: 16,
         fontFamily: 'Courier New',
         soundEnabled: true,
-        volume: 0.3
+        volume: 0.3,
+        crtEffects: {
+          chromatic: true,
+          flicker: true,
+          glow: true,
+          vignette: true,
+          curvature: false
+        }
       };
       applyLoadedSettings(currentSettings);
       closePanel();
@@ -229,6 +251,47 @@ function addSoundOption(container) {
   });
 
   optionGroup.appendChild(checkbox);
+}
+
+function addCRTEffectsSection(container) {
+  const sectionTitle = document.createElement('div');
+  sectionTitle.className = 'settings-section-title';
+  sectionTitle.textContent = '── CRT EFFECTS ──';
+  container.appendChild(sectionTitle);
+
+  const effects = [
+    { key: 'chromatic', label: 'Chromatic Aberration' },
+    { key: 'flicker', label: 'Screen Flicker' },
+    { key: 'glow', label: 'Phosphor Glow' },
+    { key: 'vignette', label: 'Vignette Effect' },
+    { key: 'curvature', label: 'Screen Curvature' }
+  ];
+
+  effects.forEach(effect => {
+    const optionGroup = createOptionGroup(container, effect.label + ':');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = currentSettings.crtEffects[effect.key];
+
+    checkbox.addEventListener('change', (event) => {
+      currentSettings.crtEffects[effect.key] = event.target.checked;
+      applyCRTEffects();
+    });
+
+    optionGroup.appendChild(checkbox);
+  });
+}
+
+function applyCRTEffects() {
+  const terminal = document.querySelector('.terminal');
+  if (!terminal) return;
+
+  // Toggle CSS classes based on settings
+  terminal.classList.toggle('crt-chromatic', currentSettings.crtEffects.chromatic);
+  terminal.classList.toggle('crt-flicker', currentSettings.crtEffects.flicker);
+  terminal.classList.toggle('crt-glow', currentSettings.crtEffects.glow);
+  terminal.classList.toggle('crt-vignette', currentSettings.crtEffects.vignette);
+  terminal.classList.toggle('crt-curvature', currentSettings.crtEffects.curvature);
 }
 
 export function applyTheme(theme) {

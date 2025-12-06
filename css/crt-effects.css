@@ -1,0 +1,170 @@
+/* ===================================
+   ENHANCED CRT EFFECTS
+   All effects are toggleable via CSS classes
+   =================================== */
+
+/* ===================================
+   BOOT ANIMATION - Power On Effect
+   =================================== */
+
+.terminal-wrapper.booting .terminal {
+  animation: crtPowerOn 1.5s ease-out, crtFlicker 0.3s ease-in-out 1.5s 3;
+}
+
+@keyframes crtPowerOn {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.01) scaleX(1);
+    filter: brightness(5);
+  }
+  10% {
+    opacity: 1;
+    transform: scaleY(0.05) scaleX(1);
+  }
+  25% {
+    transform: scaleY(0.3) scaleX(1);
+    filter: brightness(3);
+  }
+  50% {
+    transform: scaleY(0.7) scaleX(1);
+    filter: brightness(2);
+  }
+  75% {
+    transform: scaleY(0.95) scaleX(1);
+    filter: brightness(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes crtFlicker {
+  0%, 100% { opacity: 1; }
+  10% { opacity: 0.95; }
+  20% { opacity: 1; }
+  30% { opacity: 0.98; }
+  40% { opacity: 1; }
+  50% { opacity: 0.97; }
+  60% { opacity: 1; }
+  70% { opacity: 0.99; }
+  80% { opacity: 1; }
+  90% { opacity: 0.96; }
+}
+
+/* ===================================
+   CHROMATIC ABERRATION - RGB Shift
+   =================================== */
+
+.terminal.crt-chromatic .terminal-content {
+  text-shadow:
+    -0.5px 0 0 rgba(255, 0, 0, 0.3),
+    0.5px 0 0 rgba(0, 255, 255, 0.3);
+}
+
+.terminal.crt-chromatic #terminal-output,
+.terminal.crt-chromatic #terminal-input,
+.terminal.crt-chromatic #input-prefix {
+  text-shadow:
+    -0.8px 0 0 rgba(255, 0, 0, 0.25),
+    0.8px 0 0 rgba(0, 255, 255, 0.25),
+    0 0 3px currentColor;
+}
+
+/* ===================================
+   FLICKER & BRIGHTNESS PULSE
+   =================================== */
+
+@keyframes crtRandomFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+}
+
+@keyframes brightnessPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.02); }
+}
+
+.terminal.crt-flicker {
+  animation:
+    crtRandomFlicker 4s ease-in-out infinite,
+    brightnessPulse 8s ease-in-out infinite;
+}
+
+/* ===================================
+   PHOSPHOR GLOW - Bloom Effect
+   =================================== */
+
+.terminal.crt-glow {
+  box-shadow:
+    0 0 5px rgba(0, 0, 0, 0.5),
+    inset 0 0 100px rgba(255, 161, 40, 0.05),
+    inset 0 0 50px rgba(255, 161, 40, 0.02);
+}
+
+.terminal.crt-glow #terminal-output,
+.terminal.crt-glow #terminal-input,
+.terminal.crt-glow #input-prefix {
+  text-shadow:
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    0 0 9px currentColor;
+}
+
+/* Enhanced glow for cursor */
+.terminal.crt-glow .cursor::before {
+  box-shadow:
+    0 0 5px var(--cursor-color, orange),
+    0 0 10px var(--cursor-color, orange);
+}
+
+/* ===================================
+   VIGNETTE - Darkened Edges
+   =================================== */
+
+.terminal.crt-vignette::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* ===================================
+   SCREEN CURVATURE
+   =================================== */
+
+.terminal-wrapper {
+  perspective: 1000px;
+}
+
+.terminal.crt-curvature {
+  transform-style: preserve-3d;
+  border-radius: 2% / 3%;
+}
+
+/* ===================================
+   COMBINED EFFECTS OPTIMIZATION
+   =================================== */
+
+/* When multiple effects are active, ensure proper layering */
+.terminal.crt-chromatic.crt-glow #terminal-output,
+.terminal.crt-chromatic.crt-glow #terminal-input,
+.terminal.crt-chromatic.crt-glow #input-prefix {
+  text-shadow:
+    -0.8px 0 0 rgba(255, 0, 0, 0.25),
+    0.8px 0 0 rgba(0, 255, 255, 0.25),
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    0 0 9px currentColor;
+}
