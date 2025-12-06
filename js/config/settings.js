@@ -8,10 +8,7 @@ let currentSettings = {
   volume: 0.3,
   crtEffects: {
     chromatic: true,
-    flicker: true,
-    glow: true,
-    vignette: true,
-    curvature: false
+    vignette: true
   }
 };
 
@@ -96,10 +93,7 @@ function openSettingsPanel() {
         volume: 0.3,
         crtEffects: {
           chromatic: true,
-          flicker: true,
-          glow: true,
-          vignette: true,
-          curvature: false
+          vignette: true
         }
       };
       applyLoadedSettings(currentSettings);
@@ -261,10 +255,7 @@ function addCRTEffectsSection(container) {
 
   const effects = [
     { key: 'chromatic', label: 'Chromatic Aberration' },
-    { key: 'flicker', label: 'Screen Flicker' },
-    { key: 'glow', label: 'Phosphor Glow' },
-    { key: 'vignette', label: 'Vignette Effect' },
-    { key: 'curvature', label: 'Screen Curvature' }
+    { key: 'vignette', label: 'Vignette Effect' }
   ];
 
   effects.forEach(effect => {
@@ -288,10 +279,7 @@ function applyCRTEffects() {
 
   // Toggle CSS classes based on settings
   terminal.classList.toggle('crt-chromatic', currentSettings.crtEffects.chromatic);
-  terminal.classList.toggle('crt-flicker', currentSettings.crtEffects.flicker);
-  terminal.classList.toggle('crt-glow', currentSettings.crtEffects.glow);
   terminal.classList.toggle('crt-vignette', currentSettings.crtEffects.vignette);
-  terminal.classList.toggle('crt-curvature', currentSettings.crtEffects.curvature);
 }
 
 export function applyTheme(theme) {
