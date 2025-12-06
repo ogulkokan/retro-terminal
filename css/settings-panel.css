@@ -48,10 +48,10 @@
 /* Settings Panel Container - Terminal Style */
 .settings-panel {
   position: relative;
-  background: rgba(5, 50, 30, 0.95);
+  background: rgba(11, 66, 86, 0.95);
   border: 3px solid var(--cursor-color, #FFA128);
   box-shadow:
-    0 0 20px rgba(255, 161, 40, 0.5),
+    0 0 20px currentColor,
     inset 0 0 50px rgba(0, 0, 0, 0.5);
   padding: 0;
   width: 90%;
