@@ -1,18 +1,30 @@
+/**
+ * Settings Management Module
+ * Handles user preferences, persistence, and settings UI
+ */
+
 import { saveSettings, loadSettings, clearSettings } from './storage.js';
 import { getConfig } from './configLoader.js';
+import { getTerminal } from '../utils/domCache.js';
+import { FONT, THEMES, DEFAULT_THEME, AUDIO } from './constants.js';
 
 const baseDefaults = {
-  theme: 'Orange',
-  fontSize: 16,
-  fontFamily: 'Courier New',
+  theme: DEFAULT_THEME,
+  fontSize: FONT.SIZE_DEFAULT,
+  fontFamily: FONT.FAMILIES[0],
   soundEnabled: true,
-  volume: 0.3,
+  volume: AUDIO.DEFAULT_VOLUME,
   crtEffects: {
     chromatic: true,
     vignette: true
   }
 };
 
+/**
+ * Normalize theme name to proper case
+ * @param {string} theme - Theme name to normalize
+ * @returns {string} Normalized theme name
+ */
 function normalizeTheme(theme) {
   if (!theme) return baseDefaults.theme;
   const lower = theme.toString().toLowerCase();
@@ -21,6 +33,10 @@ function normalizeTheme(theme) {
   return baseDefaults.theme;
 }
 
+/**
+ * Get default settings from config or fallback to base defaults
+ * @returns {Object} Default settings object
+ */
 function getDefaultSettings() {
   const config = getConfig();
   const configSettings = config?.settings || {};
@@ -37,19 +53,20 @@ function getDefaultSettings() {
 
 let currentSettings = { ...baseDefaults };
 
+/**
+ * Initialize settings system
+ * Loads saved settings and creates settings button
+ */
 export function initSettings() {
-  // Start from config-driven defaults, then merge saved settings
   currentSettings = { ...baseDefaults, ...getDefaultSettings() };
 
-  // Load saved settings
-  const savedSettings = loadSettings();
-  if (savedSettings) {
-    currentSettings = { ...currentSettings, ...savedSettings };
+  const result = loadSettings();
+  if (result.success && result.data) {
+    currentSettings = { ...currentSettings, ...result.data };
   }
 
   applyLoadedSettings(currentSettings);
 
-  // Create settings button with retro style
   const settingsButton = document.createElement('button');
   settingsButton.textContent = '⚙ Settings';
   settingsButton.className = 'settings-button';
@@ -58,23 +75,25 @@ export function initSettings() {
   settingsButton.addEventListener('click', openSettingsPanel);
 }
 
+/**
+ * Apply settings to the terminal UI
+ * @param {Object} settings - Settings object to apply
+ */
 function applyLoadedSettings(settings) {
   const normalizedTheme = normalizeTheme(settings.theme);
   currentSettings.theme = normalizedTheme;
   applyTheme(normalizedTheme);
 
-  const terminal = document.querySelector('.terminal');
+  const terminal = getTerminal();
   if (terminal) {
     terminal.style.fontSize = settings.fontSize + 'px';
     terminal.style.fontFamily = settings.fontFamily;
   }
 
-  // Apply CRT effects
   if (settings.crtEffects) {
     applyCRTEffects();
   }
 
-  // Sync audio manager if available
   if (window.audioManager) {
     if (window.audioManager.setSoundEnabled) {
       window.audioManager.setSoundEnabled(!!settings.soundEnabled);
@@ -85,34 +104,65 @@ function applyLoadedSettings(settings) {
   }
 }
 
+/**
+ * Open the settings panel modal
+ */
 function openSettingsPanel() {
-  // Create overlay
   const overlay = document.createElement('div');
   overlay.className = 'settings-overlay';
 
-  // Create panel container
   const panel = document.createElement('div');
   panel.className = 'settings-panel';
 
-  // Add scanline effect
   const scanline = document.createElement('div');
   scanline.className = 'scanline-effect';
   panel.appendChild(scanline);
 
-  // Create content area
   const content = document.createElement('div');
   content.className = 'settings-content';
 
-  // Add all option groups
-  addThemeOption(content);
-  addFontSizeOption(content);
-  addFontFamilyOption(content);
-  addSoundOption(content);
+  // Add all settings controls
+  addSelectControl(content, {
+    label: 'Color Theme:',
+    settingKey: 'theme',
+    options: THEMES,
+    onChange: (value) => applyTheme(value)
+  });
 
-  // Add CRT Effects section
+  addNumberControl(content, {
+    label: 'Font Size:',
+    settingKey: 'fontSize',
+    min: FONT.SIZE_MIN,
+    max: FONT.SIZE_MAX,
+    step: FONT.SIZE_STEP,
+    onChange: (value) => {
+      const terminal = getTerminal();
+      if (terminal) terminal.style.fontSize = value + 'px';
+    }
+  });
+
+  addSelectControl(content, {
+    label: 'Font Family:',
+    settingKey: 'fontFamily',
+    options: FONT.FAMILIES,
+    onChange: (value) => {
+      const terminal = getTerminal();
+      if (terminal) terminal.style.fontFamily = value;
+    }
+  });
+
+  addCheckboxControl(content, {
+    label: 'Typing Sounds:',
+    settingKey: 'soundEnabled',
+    onChange: (value) => {
+      if (window.audioManager?.setSoundEnabled) {
+        window.audioManager.setSoundEnabled(value);
+      }
+    }
+  });
+
   addCRTEffectsSection(content);
 
-  // Add button row
   const buttonRow = document.createElement('div');
   buttonRow.className = 'settings-buttons';
 
@@ -141,14 +191,12 @@ function openSettingsPanel() {
   overlay.appendChild(panel);
   document.body.appendChild(overlay);
 
-  // Close on overlay click
   overlay.addEventListener('click', (event) => {
     if (event.target === overlay) {
       closePanel();
     }
   });
 
-  // Close on ESC key
   const escHandler = (event) => {
     if (event.key === 'Escape') {
       closePanel();
@@ -162,6 +210,13 @@ function openSettingsPanel() {
   }
 }
 
+/**
+ * Create a button element
+ * @param {string} text - Button text
+ * @param {string} type - Button type ('primary' or 'secondary')
+ * @param {Function} onClick - Click handler
+ * @returns {HTMLButtonElement} Button element
+ */
 function createButton(text, type, onClick) {
   const button = document.createElement('button');
   button.textContent = text;
@@ -170,6 +225,12 @@ function createButton(text, type, onClick) {
   return button;
 }
 
+/**
+ * Create an option group container
+ * @param {HTMLElement} container - Parent container
+ * @param {string} labelText - Label text
+ * @returns {HTMLElement} Option group element
+ */
 function createOptionGroup(container, labelText) {
   const optionGroup = document.createElement('div');
   optionGroup.className = 'settings-option';
@@ -183,99 +244,91 @@ function createOptionGroup(container, labelText) {
   return optionGroup;
 }
 
-function addFontSizeOption(container) {
-  const optionGroup = createOptionGroup(container, 'Font Size:');
+/**
+ * Add a number input control
+ * @param {HTMLElement} container - Parent container
+ * @param {Object} config - Control configuration
+ */
+function addNumberControl(container, config) {
+  const { label, settingKey, min, max, step, onChange } = config;
+  const optionGroup = createOptionGroup(container, label);
 
   const input = document.createElement('input');
   input.type = 'number';
-  input.value = currentSettings.fontSize;
-  input.min = 10;
-  input.max = 25;
-  input.step = 0.5;
+  input.value = currentSettings[settingKey];
+  input.min = min;
+  input.max = max;
+  input.step = step;
 
   input.addEventListener('input', (event) => {
-    const newSize = parseFloat(event.target.value);
-    const terminal = document.querySelector('.terminal');
-    if (terminal) {
-      terminal.style.fontSize = newSize + 'px';
-    }
-    currentSettings.fontSize = newSize;
+    const value = parseFloat(event.target.value);
+
+    // Validate input
+    if (isNaN(value) || value < min || value > max) return;
+
+    currentSettings[settingKey] = value;
+    if (onChange) onChange(value);
   });
 
   optionGroup.appendChild(input);
 }
 
-function addFontFamilyOption(container) {
-  const optionGroup = createOptionGroup(container, 'Font Family:');
+/**
+ * Add a select dropdown control
+ * @param {HTMLElement} container - Parent container
+ * @param {Object} config - Control configuration
+ */
+function addSelectControl(container, config) {
+  const { label, settingKey, options, onChange } = config;
+  const optionGroup = createOptionGroup(container, label);
 
   const select = document.createElement('select');
-  const fontFamilies = ['Courier New', 'Consolas', 'Roboto Mono', 'Fira Code'];
 
-  fontFamilies.forEach((fontFamily) => {
-    const option = document.createElement('option');
-    option.textContent = fontFamily;
-    option.value = fontFamily;
-    if (fontFamily === currentSettings.fontFamily) {
-      option.selected = true;
+  options.forEach((option) => {
+    const optionEl = document.createElement('option');
+    optionEl.textContent = option;
+    optionEl.value = option;
+    if (option === currentSettings[settingKey]) {
+      optionEl.selected = true;
     }
-    select.appendChild(option);
+    select.appendChild(optionEl);
   });
 
   select.addEventListener('change', (event) => {
-    const newFont = event.target.value;
-    const terminal = document.querySelector('.terminal');
-    if (terminal) {
-      terminal.style.fontFamily = newFont;
-    }
-    currentSettings.fontFamily = newFont;
+    const value = event.target.value;
+    currentSettings[settingKey] = value;
+    if (onChange) onChange(value);
   });
 
   optionGroup.appendChild(select);
 }
 
-function addThemeOption(container) {
-  const optionGroup = createOptionGroup(container, 'Color Theme:');
-
-  const select = document.createElement('select');
-  const themes = ['Green', 'Orange'];
-
-  themes.forEach((theme) => {
-    const option = document.createElement('option');
-    option.textContent = theme;
-    option.value = theme;
-    if (theme === currentSettings.theme) {
-      option.selected = true;
-    }
-    select.appendChild(option);
-  });
-
-  select.addEventListener('change', (event) => {
-    const newTheme = event.target.value;
-    applyTheme(newTheme);
-    currentSettings.theme = newTheme;
-  });
-
-  optionGroup.appendChild(select);
-}
-
-function addSoundOption(container) {
-  const optionGroup = createOptionGroup(container, 'Typing Sounds:');
+/**
+ * Add a checkbox control
+ * @param {HTMLElement} container - Parent container
+ * @param {Object} config - Control configuration
+ */
+function addCheckboxControl(container, config) {
+  const { label, settingKey, onChange } = config;
+  const optionGroup = createOptionGroup(container, label);
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
-  checkbox.checked = currentSettings.soundEnabled;
+  checkbox.checked = currentSettings[settingKey];
 
   checkbox.addEventListener('change', (event) => {
-    currentSettings.soundEnabled = event.target.checked;
-    // Update audio manager if it exists
-    if (window.audioManager && window.audioManager.setSoundEnabled) {
-      window.audioManager.setSoundEnabled(event.target.checked);
-    }
+    const value = event.target.checked;
+    currentSettings[settingKey] = value;
+    if (onChange) onChange(value);
   });
 
   optionGroup.appendChild(checkbox);
 }
 
+/**
+ * Add CRT effects section with multiple checkboxes
+ * @param {HTMLElement} container - Parent container
+ */
 function addCRTEffectsSection(container) {
   const sectionTitle = document.createElement('div');
   sectionTitle.className = 'settings-section-title';
@@ -302,18 +355,24 @@ function addCRTEffectsSection(container) {
   });
 }
 
+/**
+ * Apply CRT effect CSS classes to terminal
+ */
 function applyCRTEffects() {
-  const terminal = document.querySelector('.terminal');
+  const terminal = getTerminal();
   if (!terminal) return;
 
-  // Toggle CSS classes based on settings
   terminal.classList.toggle('crt-chromatic', currentSettings.crtEffects.chromatic);
   terminal.classList.toggle('crt-vignette', currentSettings.crtEffects.vignette);
 }
 
+/**
+ * Apply a color theme to the terminal
+ * @param {string} theme - Theme name ('Green' or 'Orange')
+ */
 export function applyTheme(theme) {
   const normalized = normalizeTheme(theme);
-  const terminal = document.querySelector('.terminal');
+  const terminal = getTerminal();
   const terminalInput = document.querySelector('#terminal-input');
   const terminalOutput = document.querySelector('#terminal-output');
   const inputPrefix = document.querySelector('#input-prefix');

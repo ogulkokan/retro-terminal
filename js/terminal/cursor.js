@@ -1,57 +1,89 @@
-// Cursor position state - this tracks where in the text the cursor is
+/**
+ * Cursor Management Module
+ * Handles keyboard-only cursor navigation with block cursor styling
+ */
+
+import { getTerminalInput } from '../utils/domCache.js';
+
 let cursorPosition = 0;
 let textContent = '';
 
+/**
+ * Clamp cursor position to valid range [0, textContent.length]
+ * @param {number} pos - Position to clamp (defaults to current position)
+ * @returns {number} Clamped position
+ */
+function clampCursor(pos = cursorPosition) {
+  return Math.max(0, Math.min(pos, textContent.length));
+}
+
+/**
+ * Initialize cursor with keyboard-only navigation
+ * Disables mouse-based text selection for authentic retro terminal feel
+ */
 export function initCursor() {
-  const terminalInput = document.getElementById("terminal-input");
+  const terminalInput = getTerminalInput();
   if (!terminalInput) return;
 
-  // Disable native text selection and caret
   terminalInput.style.caretColor = 'transparent';
   terminalInput.style.userSelect = 'none';
-  
-  // Prevent mouse from changing cursor position - old terminal style
+
   terminalInput.addEventListener('mousedown', (e) => {
     e.preventDefault();
     terminalInput.focus();
   });
-  
-  // Prevent text selection via mouse
+
   terminalInput.addEventListener('selectstart', (e) => {
     e.preventDefault();
   });
-  
-  // Prevent drag selection
+
   terminalInput.addEventListener('mousemove', (e) => {
     if (e.buttons > 0) {
       e.preventDefault();
     }
   });
-  
-  // Initial render
+
   renderInputWithCursor();
 }
 
+/**
+ * Get current cursor position
+ * @returns {number} Current cursor position
+ */
 export function getCursorPosition() {
   return cursorPosition;
 }
 
+/**
+ * Get current text content
+ * @returns {string} Current text content
+ */
 export function getTextContent() {
   return textContent;
 }
 
+/**
+ * Set text content and adjust cursor position if needed
+ * @param {string} newText - New text content
+ */
 export function setTextContent(newText) {
   textContent = newText;
-  // Ensure cursor doesn't go beyond text length
-  cursorPosition = Math.min(cursorPosition, textContent.length);
+  cursorPosition = clampCursor();
   renderInputWithCursor();
 }
 
+/**
+ * Set cursor position (will be clamped to valid range)
+ * @param {number} pos - New cursor position
+ */
 export function setCursorPosition(pos) {
-  cursorPosition = Math.max(0, Math.min(pos, textContent.length));
+  cursorPosition = clampCursor(pos);
   renderInputWithCursor();
 }
 
+/**
+ * Move cursor one position to the left
+ */
 export function moveCursorLeft() {
   if (cursorPosition > 0) {
     cursorPosition--;
@@ -59,6 +91,9 @@ export function moveCursorLeft() {
   }
 }
 
+/**
+ * Move cursor one position to the right
+ */
 export function moveCursorRight() {
   if (cursorPosition < textContent.length) {
     cursorPosition++;
@@ -66,22 +101,35 @@ export function moveCursorRight() {
   }
 }
 
+/**
+ * Move cursor to start of text
+ */
 export function moveCursorToStart() {
   cursorPosition = 0;
   renderInputWithCursor();
 }
 
+/**
+ * Move cursor to end of text
+ */
 export function moveCursorToEnd() {
   cursorPosition = textContent.length;
   renderInputWithCursor();
 }
 
+/**
+ * Insert a character at cursor position
+ * @param {string} char - Character to insert
+ */
 export function insertCharAtCursor(char) {
   textContent = textContent.slice(0, cursorPosition) + char + textContent.slice(cursorPosition);
   cursorPosition++;
   renderInputWithCursor();
 }
 
+/**
+ * Delete character before cursor (backspace)
+ */
 export function deleteCharBeforeCursor() {
   if (cursorPosition > 0) {
     textContent = textContent.slice(0, cursorPosition - 1) + textContent.slice(cursorPosition);
@@ -90,6 +138,9 @@ export function deleteCharBeforeCursor() {
   }
 }
 
+/**
+ * Delete character at cursor (delete key)
+ */
 export function deleteCharAtCursor() {
   if (cursorPosition < textContent.length) {
     textContent = textContent.slice(0, cursorPosition) + textContent.slice(cursorPosition + 1);
@@ -97,37 +148,40 @@ export function deleteCharAtCursor() {
   }
 }
 
+/**
+ * Clear all input text and reset cursor
+ */
 export function clearInput() {
   textContent = '';
   cursorPosition = 0;
   renderInputWithCursor();
 }
 
+/**
+ * Render input field with block cursor at current position
+ * @private
+ */
 function renderInputWithCursor() {
-  const terminalInput = document.getElementById("terminal-input");
+  const terminalInput = getTerminalInput();
   if (!terminalInput) return;
 
   const beforeCursor = textContent.slice(0, cursorPosition);
   const atCursor = textContent.slice(cursorPosition, cursorPosition + 1) || ' ';
   const afterCursor = textContent.slice(cursorPosition + 1);
 
-  // Build the display with cursor
   terminalInput.innerHTML = '';
-  
-  // Text before cursor
+
   if (beforeCursor) {
     const beforeSpan = document.createElement('span');
     beforeSpan.textContent = beforeCursor;
     terminalInput.appendChild(beforeSpan);
   }
-  
-  // Cursor character (highlighted)
+
   const cursorSpan = document.createElement('span');
   cursorSpan.className = 'cursor-block';
   cursorSpan.textContent = atCursor;
   terminalInput.appendChild(cursorSpan);
-  
-  // Text after cursor
+
   if (afterCursor) {
     const afterSpan = document.createElement('span');
     afterSpan.textContent = afterCursor;

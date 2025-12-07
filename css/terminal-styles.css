@@ -18,10 +18,10 @@
   max-height: calc(100vh - 10em);
   background: radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%);
   animation: txt-shadow 1.6s infinite;
-  font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)));
+  /* Responsive font sizing with clamp for better mobile support */
+  font-size: clamp(10px, 2.5vw, 16px);
   overflow: auto;
   overflow-y: scroll;
-  /* position: relative; */
 }
 
 /* Hide scrollbar */
@@ -33,7 +33,9 @@
   color: #FFA128;
   font-weight: bold;
   margin-bottom: 0.5em;
-  white-space: pre-wrap;  
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .terminal {
@@ -42,10 +44,43 @@
 }
 
   
-@media (min-width: 768px) {
+/* Mobile-first responsive breakpoints */
+/* Small phones (portrait) */
+@media (max-width: 480px) {
+  .terminal {
+    font-size: clamp(8px, 2vw, 11px);
+    padding: 0.5em;
+    width: calc(100vw - 1em);
+    height: calc(100vh - 2em);
+  }
+
+  .terminal #terminal-input-wrapper {
+    font-size: 0.9em;
+  }
+}
+
+/* Medium screens - ASCII art needs full width to fit */
+@media (min-width: 481px) and (max-width: 850px) {
+  .terminal {
+    font-size: clamp(9px, 1.5vw, 10px);
+    width: calc(100vw - 1em);
+    padding: 0.5em;
+  }
+}
+
+/* Large screens - can use bigger font */
+@media (min-width: 851px) {
   .terminal {
     width: 75vw;
     height: 100vh;
+    font-size: clamp(12px, 1.5vw, 16px);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .terminal {
+    font-size: 16px;
   }
 }
     

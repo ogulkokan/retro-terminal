@@ -19,12 +19,13 @@ https://ogulkokan.github.io/retro-terminal/
 - `help`: Displays a list of available commands.
 - `date`: Displays the current date and time.
 - `clear`: Clears the terminal output.
+- `about`: Displays information of the developer.
+- `skills`: Displays a list of skills and technologies related to the developer.
+- `education`: Displays information about the developer's education background.
+- `projects`: Displays a list of your portfolio projects.
+- `contact`: Displays contact information of the developer.
 - `theme green`: Changes the terminal theme to green.
 - `theme orange`: Changes the terminal theme to orange.
-- `contact`: Displays contact information of the developer.
-- `about`: Displays information of the developer.
-- `skills`:  Displays a list of skills and technologies related to the developer.
-- `education`: Displays information about the developer's education background. project
 
 ## Features
 * **Autocomplete:** Suggests possible commands as users start typing, similar to real terminals.
@@ -33,7 +34,8 @@ https://ogulkokan.github.io/retro-terminal/
 * **Settings persistence:** Your preferences are saved automatically to browser localStorage.
 * **Typing sound effects:** Optional keyboard typing sounds for enhanced immersion.
 * **Configuration file support:** Easy customization via config.json for GitHub template usage.
-* **Mobile-friendly:** Fully responsive design that works well on mobile devices.
+* **Fully mobile responsive:** Automatically adapts to any screen size from mobile phones to 4K displays.
+* **Smart mobile banner:** Shows simplified banner on mobile devices for better readability.
 
 ## Settings
 
@@ -73,12 +75,15 @@ All personal content is configured in `config.json`. The file uses arrays for mu
   },
   "content": {
     "banner": ["Line 1", "Line 2", "..."],
+    "mobileBanner": ["Mobile-friendly", "shorter banner", "..."],
     "about": ["Your bio", "..."],
     "education": ["Your degrees", "..."],
     "skills": ["Your skills", "..."]
   }
 }
 ```
+
+**Note:** The `mobileBanner` field is optional. If not provided, a simple text banner is auto-generated for mobile devices.
 
 #### Quick Tips:
 

@@ -1,3 +1,8 @@
+/**
+ * RetroTerminal Main Entry Point
+ * Initializes all terminal modules in proper sequence
+ */
+
 import { init } from './init.js';
 import { initCursor } from './terminal/cursor.js';
 import { showWelcomeMessage } from './terminal/terminal.js';
@@ -5,10 +10,9 @@ import { handleClick, theme, fullscreen, globalListener } from './handlers/globa
 import { initSettings } from "./config/settings.js";
 import { initAudio } from './audio/audioManager.js';
 import { loadConfig } from './config/configLoader.js';
+import { initDOMCache } from './utils/domCache.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Load config first - required for content and settings. If it fails,
-  // continue booting with built-in defaults so the app still works.
   try {
     await loadConfig();
   } catch (error) {
@@ -16,6 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   init();
+  initDOMCache();
   initCursor();
   initAudio();
   showWelcomeMessage();

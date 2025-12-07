@@ -1,8 +1,13 @@
+/**
+ * Input Handler Module
+ * Processes keyboard input, command history, and autocomplete
+ */
+
 import { processCommand, animateText } from '../terminal/terminal.js';
 import { scrollToBottom } from './utils.js';
 import { playTypingSound } from '../audio/audioManager.js';
-import { 
-  getTextContent, 
+import {
+  getTextContent,
   setTextContent,
   clearInput,
   insertCharAtCursor,
@@ -13,15 +18,19 @@ import {
   moveCursorToStart,
   moveCursorToEnd
 } from '../terminal/cursor.js';
+import { getTerminalOutput, getTerminalInput, getInputPrefix } from '../utils/domCache.js';
 
 let commandHistory = [];
 let commandIndex = -1;
 
+/**
+ * Handle keyboard input events
+ * @param {KeyboardEvent} event - Keyboard event
+ */
 export async function handleInput(event) {
-  const terminalOutput = document.getElementById("terminal-output");
+  const terminalOutput = getTerminalOutput();
   const terminalInput = event.target;
 
-  // Prevent default for all keys to stop native contenteditable behavior
   event.preventDefault();
 
   if (event.key === "Enter") {
@@ -63,6 +72,11 @@ export async function handleInput(event) {
   }
 }
 
+/**
+ * Handle Enter key - execute command
+ * @param {HTMLElement} terminalOutput - Output container
+ * @param {HTMLElement} terminalInput - Input element
+ */
 async function handleEnterKey(terminalOutput, terminalInput) {
   const inputText = getTextContent().trim();
   const outputText = processCommand(inputText);
@@ -78,7 +92,7 @@ async function handleEnterKey(terminalOutput, terminalInput) {
       clearInput();
       terminalOutput.appendChild(newOutputLine);
 
-      const inputPrefix = document.getElementById("input-prefix");
+      const inputPrefix = getInputPrefix();
       await animateText(newOutputLine, inputPrefix.textContent, 10, terminalInput, inputPrefix);
     }
     await animateText(newOutputLine, outputText, 10, terminalInput);
@@ -89,6 +103,9 @@ async function handleEnterKey(terminalOutput, terminalInput) {
   terminalInput.focus();
 }
 
+/**
+ * Handle Arrow Up - navigate command history backwards
+ */
 function handleArrowUp() {
   if (commandIndex > 0) {
     commandIndex--;
@@ -97,6 +114,9 @@ function handleArrowUp() {
   }
 }
 
+/**
+ * Handle Arrow Down - navigate command history forwards
+ */
 function handleArrowDown() {
   if (commandIndex < commandHistory.length - 1) {
     commandIndex++;
@@ -108,10 +128,16 @@ function handleArrowDown() {
   }
 }
 
+/**
+ * Handle Escape - clear input
+ */
 function handleEscape() {
   clearInput();
 }
 
+/**
+ * Handle Tab - autocomplete command
+ */
 function handleTab() {
   const inputText = getTextContent().trim();
   const suggestions = getAutocompleteSuggestions(inputText);
@@ -124,6 +150,11 @@ function handleTab() {
   }
 }
 
+/**
+ * Get autocomplete suggestions for input text
+ * @param {string} inputText - Current input text
+ * @returns {string[]} Array of matching commands
+ */
 function getAutocompleteSuggestions(inputText) {
   const availableCommands = [
     "help",

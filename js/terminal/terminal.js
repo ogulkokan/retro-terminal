@@ -1,6 +1,12 @@
+/**
+ * Terminal Core Module
+ * Handles command processing, text animation, and welcome message
+ */
+
 import { applyTheme } from "../config/settings.js";
 import {
 	getBanner,
+	getMobileBanner,
 	getAbout,
 	getEducation,
 	getContact,
@@ -9,22 +15,74 @@ import {
 	getProjects,
 	getLinkedInURL,
 	getGitHubURL,
-	getEmail
+	getEmail,
+	getName
 } from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
+import { getTerminalOutput, getTerminalInput, getInputPrefix } from '../utils/domCache.js';
+import { ANIMATION } from '../config/constants.js';
+import { shouldUseMobileBanner } from '../utils/responsive.js';
 
+/**
+ * Generate a simple text-only banner for mobile devices
+ * @param {string} name - User's name
+ * @returns {string} Mobile-friendly banner text
+ */
+function getSimpleMobileBanner(name) {
+	return `
+╔════════════════════════════╗
+║    RETRO TERMINAL v0.1    ║
+╔════════════════════════════╝
+║
+║  Welcome, ${name}!
+║
+║  Type 'help' for commands
+║
+╚═══════════════════════════
+`;
+}
+
+/**
+ * Display welcome banner on terminal initialization
+ * Shows mobile-optimized version on screens <670px
+ */
 export async function showWelcomeMessage() {
-	const terminalOutput = document.getElementById("terminal-output");
-	const welcomeMessage = getBanner();
+	const terminalOutput = getTerminalOutput();
+	let welcomeMessage;
+
+	// Use mobile banner on screens <670px (phones, portrait tablets)
+	if (shouldUseMobileBanner()) {
+		const mobileBanner = getMobileBanner();
+		if (mobileBanner) {
+			welcomeMessage = mobileBanner;
+		} else {
+			// Fallback to simple text banner
+			welcomeMessage = getSimpleMobileBanner(getName() || 'User');
+		}
+	} else {
+		welcomeMessage = getBanner();
+	}
+
 	const newOutputLine = document.createElement("div");
 	terminalOutput.appendChild(newOutputLine);
-	await animateText(newOutputLine, welcomeMessage);
+
+	// Skip animation on mobile for instant load
+	if (shouldUseMobileBanner()) {
+		newOutputLine.textContent = welcomeMessage;
+	} else {
+		await animateText(newOutputLine, welcomeMessage);
+	}
+
 	scrollToBottom();
 }
 
+/**
+ * Process a command and return the response text
+ * @param {string} inputText - Command text entered by user
+ * @returns {string} Response text to display
+ */
 export function processCommand(inputText) {
-	const inputPrefix = document.getElementById("input-prefix");
-	const terminalInput = document.getElementById("terminal-input");
+	const terminalInput = getTerminalInput();
 	const userCommand = terminalInput.textContent;
 	let response = '';
 
@@ -34,7 +92,7 @@ export function processCommand(inputText) {
 	  case "date":
 		return userCommand + "\n" + new Date().toLocaleString();
 	  case "clear":
-		document.getElementById("terminal-output").innerHTML = "";
+		getTerminalOutput().innerHTML = "";
 		return "";
 	  case "about":
 		return userCommand + "\n" + getAbout();
@@ -74,21 +132,42 @@ let userInteracted = false;
 document.addEventListener("click", () => {
 	userInteracted = true;
 });
-  
-export async function animateText(element, text, delay = 10, terminalInput, inputPrefix) {
+
+/**
+ * Calculate animation speed multiplier based on text length
+ * Longer text animates faster to improve UX
+ * @param {number} textLength - Length of text to animate
+ * @returns {number} Speed multiplier
+ */
+function getSpeedMultiplier(textLength) {
+	if (textLength <= ANIMATION.THRESHOLDS.SHORT) {
+		return ANIMATION.SPEED_MULTIPLIERS.SHORT;
+	} else if (textLength <= ANIMATION.THRESHOLDS.MEDIUM) {
+		return ANIMATION.SPEED_MULTIPLIERS.MEDIUM;
+	}
+	return ANIMATION.SPEED_MULTIPLIERS.LONG;
+}
+
+/**
+ * Animate text character by character with adaptive speed
+ * @param {HTMLElement} element - Element to display text in
+ * @param {string} text - Text to animate
+ * @param {number} delay - Base delay in milliseconds (default from constants)
+ * @param {HTMLElement} terminalInput - Optional input element to disable during animation
+ * @param {HTMLElement} inputPrefix - Optional prefix element to hide during animation
+ */
+export async function animateText(element, text, delay = ANIMATION.DELAY_DEFAULT, terminalInput, inputPrefix) {
 	if (terminalInput) {
 		terminalInput.contentEditable = "false";
 		if (inputPrefix) inputPrefix.style.display = "none";
 	}
 
-	// Calculate speed factor based on character count
-	const speedFactor = text.length <= 50 ? 1 : text.length <= 100 ? 10 : 20;
+	const speedFactor = getSpeedMultiplier(text.length);
 	const adjustedDelay = delay / speedFactor;
 
 	for (const char of text) {
 		element.textContent += char;
 		scrollToBottom();
-
 		await new Promise((resolve) => setTimeout(resolve, adjustedDelay));
 	}
 
