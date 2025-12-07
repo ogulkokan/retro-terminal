@@ -6,7 +6,6 @@
 import { applyTheme } from "../config/settings.js";
 import {
 	getBanner,
-	getMobileBanner,
 	getAbout,
 	getEducation,
 	getContact,
@@ -15,64 +14,23 @@ import {
 	getProjects,
 	getLinkedInURL,
 	getGitHubURL,
-	getEmail,
-	getName
+	getEmail
 } from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
 import { getTerminalOutput, getTerminalInput, getInputPrefix } from '../utils/domCache.js';
 import { ANIMATION } from '../config/constants.js';
-import { shouldUseMobileBanner } from '../utils/responsive.js';
-
-/**
- * Generate a simple text-only banner for mobile devices
- * @param {string} name - User's name
- * @returns {string} Mobile-friendly banner text
- */
-function getSimpleMobileBanner(name) {
-	return `
-╔════════════════════════════╗
-║    RETRO TERMINAL v0.1    ║
-╔════════════════════════════╝
-║
-║  Welcome, ${name}!
-║
-║  Type 'help' for commands
-║
-╚═══════════════════════════
-`;
-}
 
 /**
  * Display welcome banner on terminal initialization
- * Shows mobile-optimized version on screens <670px
  */
 export async function showWelcomeMessage() {
 	const terminalOutput = getTerminalOutput();
-	let welcomeMessage;
-
-	// Use mobile banner on screens <670px (phones, portrait tablets)
-	if (shouldUseMobileBanner()) {
-		const mobileBanner = getMobileBanner();
-		if (mobileBanner) {
-			welcomeMessage = mobileBanner;
-		} else {
-			// Fallback to simple text banner
-			welcomeMessage = getSimpleMobileBanner(getName() || 'User');
-		}
-	} else {
-		welcomeMessage = getBanner();
-	}
+	const welcomeMessage = getBanner();
 
 	const newOutputLine = document.createElement("div");
 	terminalOutput.appendChild(newOutputLine);
 
-	// Skip animation on mobile for instant load
-	if (shouldUseMobileBanner()) {
-		newOutputLine.textContent = welcomeMessage;
-	} else {
-		await animateText(newOutputLine, welcomeMessage);
-	}
-
+	await animateText(newOutputLine, welcomeMessage);
 	scrollToBottom();
 }
 

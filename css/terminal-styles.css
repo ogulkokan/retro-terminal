@@ -45,10 +45,10 @@
 
   
 /* Mobile-first responsive breakpoints */
-/* Small phones (portrait) */
+/* Small phones (portrait) - override inline styles */
 @media (max-width: 480px) {
   .terminal {
-    font-size: clamp(8px, 2vw, 11px);
+    font-size: clamp(8px, 2vw, 10px) !important;
     padding: 0.5em;
     width: calc(100vw - 1em);
     height: calc(100vh - 2em);
@@ -59,10 +59,18 @@
   }
 }
 
-/* Medium screens - ASCII art needs full width to fit */
-@media (min-width: 481px) and (max-width: 850px) {
+/* Small/medium screens - ASCII art needs smaller font */
+@media (min-width: 481px) and (max-width: 670px) {
   .terminal {
-    font-size: clamp(9px, 1.5vw, 10px);
+    font-size: clamp(9px, 1.8vw, 12px) !important;
+    width: calc(100vw - 1em);
+    padding: 0.5em;
+  }
+}
+
+/* Medium screens - full width for ASCII art */
+@media (min-width: 671px) and (max-width: 850px) {
+  .terminal {
     width: calc(100vw - 1em);
     padding: 0.5em;
   }

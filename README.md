@@ -34,30 +34,9 @@ https://ogulkokan.github.io/retro-terminal/
 * **Settings persistence:** Your preferences are saved automatically to browser localStorage.
 * **Typing sound effects:** Optional keyboard typing sounds for enhanced immersion.
 * **Configuration file support:** Easy customization via config.json for GitHub template usage.
-* **Fully mobile responsive:** Automatically adapts to any screen size from mobile phones to 4K displays.
-* **Smart mobile banner:** Shows simplified banner on mobile devices for better readability.
-
-## Settings
-
-Click the **⚙ Settings** button in the top-right to customize:
-- **Color Theme:** Green or Orange
-- **Font Family:** Courier New, Consolas, Roboto Mono, Fira Code
-- **Font Size:** 10-25px
-- **Typing Sounds:** Enable/disable keyboard sound effects
-
-All settings are automatically saved to your browser and persist across sessions.
+* **Fully mobile responsive:** Automatically adapts font size and layout to any screen size, keeping ASCII art intact from mobile to 4K.
 
 ## Customization
-
-### For Forkers & Template Users
-
-This project is designed to be easily customizable! Follow these steps to make it your own:
-
-1. **Fork this repository** on GitHub
-2. **Edit `config.json`** - this is the only file you need to change!
-3. **Commit and push** your changes
-4. **Enable GitHub Pages** in repository settings (Settings → Pages → Source: main branch)
-5. **Visit your terminal** at `https://yourusername.github.io/retro-terminal/`
 
 ### Configuration Guide
 
@@ -75,15 +54,12 @@ All personal content is configured in `config.json`. The file uses arrays for mu
   },
   "content": {
     "banner": ["Line 1", "Line 2", "..."],
-    "mobileBanner": ["Mobile-friendly", "shorter banner", "..."],
     "about": ["Your bio", "..."],
     "education": ["Your degrees", "..."],
     "skills": ["Your skills", "..."]
   }
 }
 ```
-
-**Note:** The `mobileBanner` field is optional. If not provided, a simple text banner is auto-generated for mobile devices.
 
 #### Quick Tips:
 
@@ -99,8 +75,6 @@ All personal content is configured in `config.json`. The file uses arrays for mu
 - 📝 **Content:** About, education, skills, contact info
 - ⚙️ **Settings:** Default theme, fonts, sound settings
 - 🎯 **Terminal:** Title, prompt style
-
-No JavaScript knowledge required - just edit JSON and you're done!
 
 ### References
 * Idea: https://github.com/andersevenrud/retro-css-shell-demo

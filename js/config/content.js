@@ -27,11 +27,6 @@ export function getBanner() {
   return config?.content?.banner || 'Welcome to Retro Terminal';
 }
 
-export function getMobileBanner() {
-  const config = getConfig();
-  return config?.content?.mobileBanner || null;
-}
-
 export function getAbout() {
   const config = getConfig();
   return config?.content?.about || 'About information not configured.';
