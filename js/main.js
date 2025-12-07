@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   init();
-  initCursor(); // Initialize cursor after DOM is ready
+  initCursor();
   initAudio();
   showWelcomeMessage();
   initSettings();

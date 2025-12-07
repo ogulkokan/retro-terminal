@@ -93,27 +93,16 @@
       "      - about: Learn more about me.",
       "      - skills: Explore my skills and technologies.",
       "      - education: Discover my educational background.",
+      "      - projects: View my projects.",
       "    ......................................................................................."
     ],
-    "test": [
-      "-------------------------------------------",
-      "            .mmMMMMMMMMMmm.",
-      "         .mmMMMMMMMMMMMMMMMMMmm.",
-      "      .mmMMMMMMMMMMMMMMMMMMMMMMMMm.",
-      "    ......    .............    ......",
-      "   .......                     .......",
-      "  ........                     ........",
-      " ........                       .......",
-      " .......                         .......",
-      " ........                       ........",
-      "  ........                     ........",
-      "   .........                ..........",
-      "    ....  ......         ............",
-      "     .....               ..........",
-      "        ........         ........",
-      "            ....         ....",
+    "projects": [
+      "    * Projects:",
+      "        - RetroTerminal: A customizable retro-style terminal for web",
+      "          GitHub: github.com/ogulkokan/retro-terminal",
       "",
-      "-------------------------------------------"
+      "        - [Add your projects here]",
+      "    ......................................................................................."
     ]
   },
   "settings": {

@@ -127,7 +127,7 @@ function handleTab() {
 function getAutocompleteSuggestions(inputText) {
   const availableCommands = [
     "help",
-    "date",
+    "date", 
     "clear",
     "about",
     "projects",
@@ -135,6 +135,8 @@ function getAutocompleteSuggestions(inputText) {
     "experience",
     "education",
     "contact",
+    "theme green",
+    "theme orange",
   ];
 
   return availableCommands.filter((command) => {

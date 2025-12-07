@@ -6,7 +6,7 @@ import {
 	getContact,
 	getSkills,
 	getHelp,
-	getTest,
+	getProjects,
 	getLinkedInURL,
 	getGitHubURL,
 	getEmail
@@ -46,6 +46,8 @@ export function processCommand(inputText) {
 		return userCommand + "\n" + getEducation();
 	  case "contact":
 		return userCommand + "\n" + getContact();
+	  case "projects":
+		return userCommand + "\n" + getProjects();
 	  case "contact linkedin":
 		window.open(getLinkedInURL(), "_blank");
 		break;
@@ -62,8 +64,6 @@ export function processCommand(inputText) {
 	  case "theme orange":
 		applyTheme('Orange');
 		return userCommand + "\n" + "Theme changed to Orange.";
-	  case "test":
-		return userCommand + "\n" + getTest();
 	  default:
 		return userCommand + "\n" + `Unknown command: ${inputText}`;
 	}

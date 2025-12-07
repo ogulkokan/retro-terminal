@@ -52,20 +52,7 @@ export function getHelp() {
   return config?.content?.help || 'Help information not configured.';
 }
 
-export function getTest() {
+export function getProjects() {
   const config = getConfig();
-  return config?.content?.test || '';
+  return config?.content?.projects || 'No projects configured.';
 }
-
-// Backward compatibility exports for existing code
-// These are deprecated - code should use getter functions instead
-export const email = getEmail();
-export const linkedinURL = getLinkedInURL();
-export const githubURL = getGitHubURL();
-export const banner = getBanner();
-export const about = getAbout();
-export const education = getEducation();
-export const skills = getSkills();
-export const contact = getContact();
-export const help = getHelp();
-export const test = getTest();
