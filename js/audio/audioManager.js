@@ -1,13 +1,28 @@
-let typingSound = null;
+const SOUND_SRC = 'sounds/single-key-stroke.mp3';
+const POOL_SIZE = 6;
+
+let audioPool = [];
 let soundEnabled = true;
 let volume = 0.3;
 
+function createAudioInstance() {
+  const audio = new Audio(SOUND_SRC);
+  audio.volume = volume;
+  audio.preload = 'auto';
+  // Preload audio
+  audio.load();
+  return audio;
+}
+
+function ensurePool() {
+  if (audioPool.length === 0) {
+    audioPool = Array.from({ length: POOL_SIZE }, () => createAudioInstance());
+  }
+}
+
 export function initAudio() {
   try {
-    typingSound = new Audio('sounds/typing.mp3');
-    typingSound.volume = volume;
-    // Preload audio
-    typingSound.load();
+    ensurePool();
   } catch (error) {
     console.warn('Failed to initialize audio:', error);
   }
@@ -26,19 +41,24 @@ export function setSoundEnabled(enabled) {
 
 export function setVolume(newVolume) {
   volume = Math.max(0, Math.min(1, newVolume));
-  if (typingSound) {
-    typingSound.volume = volume;
-  }
+  audioPool.forEach(audio => {
+    audio.volume = volume;
+  });
 }
 
 export function playTypingSound() {
-  if (!soundEnabled || !typingSound) return;
+  if (!soundEnabled) return;
+  ensurePool();
+
+  // Find an available audio instance; if none free, skip to avoid choppy cutoffs
+  const audio = audioPool.find(a => a.paused || a.ended);
+  if (!audio) return;
 
   try {
-    typingSound.currentTime = 0;
-    typingSound.play().catch(error => {
-      // Silently ignore autoplay policy errors
-      // These are expected before user interaction
+    audio.currentTime = 0;
+    audio.volume = volume;
+    audio.play().catch(() => {
+      // Silently ignore autoplay policy errors; expected before user interaction
     });
   } catch (error) {
     console.warn('Audio playback error:', error);

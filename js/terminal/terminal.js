@@ -12,7 +12,6 @@ import {
 	getEmail
 } from "../config/content.js";
 import { scrollToBottom } from '../handlers/utils.js';
-import { playTypingSound } from '../audio/audioManager.js';
 
 export async function showWelcomeMessage() {
 	const terminalOutput = document.getElementById("terminal-output");
@@ -82,8 +81,6 @@ export async function animateText(element, text, delay = 10, terminalInput, inpu
 		if (inputPrefix) inputPrefix.style.display = "none";
 	}
 
-	// const typingSound = new Audio("sounds/typing.mp3");
-
 	// Calculate speed factor based on character count
 	const speedFactor = text.length <= 50 ? 1 : text.length <= 100 ? 10 : 20;
 	const adjustedDelay = delay / speedFactor;
@@ -91,11 +88,6 @@ export async function animateText(element, text, delay = 10, terminalInput, inpu
 	for (const char of text) {
 		element.textContent += char;
 		scrollToBottom();
-
-		if (userInteracted) {
-			// Play typing sound
-			playTypingSound();
-		}
 
 		await new Promise((resolve) => setTimeout(resolve, adjustedDelay));
 	}

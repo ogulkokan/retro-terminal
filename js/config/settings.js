@@ -1,6 +1,7 @@
 import { saveSettings, loadSettings, clearSettings } from './storage.js';
+import { getConfig } from './configLoader.js';
 
-let currentSettings = {
+const baseDefaults = {
   theme: 'Orange',
   fontSize: 16,
   fontFamily: 'Courier New',
@@ -12,13 +13,41 @@ let currentSettings = {
   }
 };
 
+function normalizeTheme(theme) {
+  if (!theme) return baseDefaults.theme;
+  const lower = theme.toString().toLowerCase();
+  if (lower === 'green') return 'Green';
+  if (lower === 'orange') return 'Orange';
+  return baseDefaults.theme;
+}
+
+function getDefaultSettings() {
+  const config = getConfig();
+  const configSettings = config?.settings || {};
+
+  return {
+    theme: normalizeTheme(config?.terminal?.defaultTheme),
+    fontSize: configSettings.defaultFontSize ?? baseDefaults.fontSize,
+    fontFamily: configSettings.defaultFontFamily ?? baseDefaults.fontFamily,
+    soundEnabled: configSettings.enableSound ?? baseDefaults.soundEnabled,
+    volume: configSettings.soundVolume ?? baseDefaults.volume,
+    crtEffects: { ...baseDefaults.crtEffects }
+  };
+}
+
+let currentSettings = { ...baseDefaults };
+
 export function initSettings() {
+  // Start from config-driven defaults, then merge saved settings
+  currentSettings = { ...baseDefaults, ...getDefaultSettings() };
+
   // Load saved settings
   const savedSettings = loadSettings();
   if (savedSettings) {
     currentSettings = { ...currentSettings, ...savedSettings };
-    applyLoadedSettings(currentSettings);
   }
+
+  applyLoadedSettings(currentSettings);
 
   // Create settings button with retro style
   const settingsButton = document.createElement('button');
@@ -30,7 +59,9 @@ export function initSettings() {
 }
 
 function applyLoadedSettings(settings) {
-  applyTheme(settings.theme);
+  const normalizedTheme = normalizeTheme(settings.theme);
+  currentSettings.theme = normalizedTheme;
+  applyTheme(normalizedTheme);
 
   const terminal = document.querySelector('.terminal');
   if (terminal) {
@@ -43,7 +74,15 @@ function applyLoadedSettings(settings) {
     applyCRTEffects();
   }
 
-  // Audio settings will be applied by audioManager when it initializes
+  // Sync audio manager if available
+  if (window.audioManager) {
+    if (window.audioManager.setSoundEnabled) {
+      window.audioManager.setSoundEnabled(!!settings.soundEnabled);
+    }
+    if (window.audioManager.setVolume && typeof settings.volume === 'number') {
+      window.audioManager.setVolume(settings.volume);
+    }
+  }
 }
 
 function openSettingsPanel() {
@@ -85,17 +124,7 @@ function openSettingsPanel() {
   const resetButton = createButton('Reset', 'secondary', () => {
     if (confirm('Reset all settings to defaults?')) {
       clearSettings();
-      currentSettings = {
-        theme: 'Orange',
-        fontSize: 16,
-        fontFamily: 'Courier New',
-        soundEnabled: true,
-        volume: 0.3,
-        crtEffects: {
-          chromatic: true,
-          vignette: true
-        }
-      };
+      currentSettings = { ...baseDefaults, ...getDefaultSettings() };
       applyLoadedSettings(currentSettings);
       closePanel();
     }
@@ -123,13 +152,13 @@ function openSettingsPanel() {
   const escHandler = (event) => {
     if (event.key === 'Escape') {
       closePanel();
-      document.removeEventListener('keydown', escHandler);
     }
   };
   document.addEventListener('keydown', escHandler);
 
   function closePanel() {
     overlay.remove();
+    document.removeEventListener('keydown', escHandler);
   }
 }
 
@@ -283,6 +312,7 @@ function applyCRTEffects() {
 }
 
 export function applyTheme(theme) {
+  const normalized = normalizeTheme(theme);
   const terminal = document.querySelector('.terminal');
   const terminalInput = document.querySelector('#terminal-input');
   const terminalOutput = document.querySelector('#terminal-output');
@@ -290,14 +320,14 @@ export function applyTheme(theme) {
 
   if (!terminal) return;
 
-  if (theme === 'Green') {
+  if (normalized === 'Green') {
     terminal.style.background = '#05321e';
     terminal.style.backgroundImage = 'radial-gradient(ellipse, #05321e 0%, #050505 90%)';
     if (terminalInput) terminalInput.style.color = 'rgb(62, 209, 46)';
     if (terminalOutput) terminalOutput.style.color = 'rgb(62, 209, 46)';
     if (inputPrefix) inputPrefix.style.color = 'rgb(62, 209, 46)';
     document.documentElement.style.setProperty('--cursor-color', 'rgb(62, 209, 46)');
-  } else if (theme === 'Orange') {
+  } else if (normalized === 'Orange') {
     terminal.style.background = 'hsla(30, 57%, 14%, 1)';
     terminal.style.backgroundImage = 'radial-gradient(circle, hsla(30, 57%, 14%, 1) 0%, hsla(30, 67%, 5%, 1) 100%)';
     if (terminalInput) terminalInput.style.color = '#FFA128';

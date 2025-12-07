@@ -1,24 +1,26 @@
 import { init } from './init.js';
 import { initCursor } from './terminal/cursor.js';
-import { showWelcomeMessage, processCommand, animateText } from './terminal/terminal.js';
+import { showWelcomeMessage } from './terminal/terminal.js';
 import { handleClick, theme, fullscreen, globalListener } from './handlers/globalHandlers.js';
 import { initSettings } from "./config/settings.js";
 import { initAudio } from './audio/audioManager.js';
 import { loadConfig } from './config/configLoader.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Load config first - required for content and settings
-  await loadConfig();
+  // Load config first - required for content and settings. If it fails,
+  // continue booting with built-in defaults so the app still works.
+  try {
+    await loadConfig();
+  } catch (error) {
+    console.warn('Continuing with built-in defaults; config.json failed to load.', error);
+  }
 
-  // Initialize components after config is loaded
   init();
+  initCursor(); // Initialize cursor after DOM is ready
   initAudio();
   showWelcomeMessage();
   initSettings();
 });
-
-// These don't depend on config so can run immediately
-initCursor();
 
 document.addEventListener("keydown", globalListener);
 

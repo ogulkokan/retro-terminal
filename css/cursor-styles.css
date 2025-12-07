@@ -14,8 +14,28 @@
   animation: blink 1s steps(1, end) infinite;
 }
 
+/* Block cursor for retro terminal effect */
+.cursor-block {
+  background-color: #FFA128;
+  color: #000;
+  animation: cursor-blink 1s steps(1, end) infinite;
+  display: inline-block;
+  min-width: 0.6em;
+}
+
 @keyframes blink {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 50% {
+    background-color: #FFA128;
+    color: #000;
+  }
+  51%, 100% {
+    background-color: transparent;
+    color: #FFA128;
   }
 }

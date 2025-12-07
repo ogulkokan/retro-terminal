@@ -1,103 +1,61 @@
 import { scrollToBottom } from './utils.js';
 
 export function handleClick(event) {
+  // Prevent default to completely disable mouse caret placement
+  // Old terminals only allow keyboard navigation
   if (event) {
     event.preventDefault();
-  }
-  let input = document.querySelector("[contenteditable='true']");
-  if (input) {
-    input.focus();
-  }
-
-  const terminalOutput = document.getElementById("terminal-output");
-  const isScrolledToBottom =
-    terminalOutput.scrollHeight - terminalOutput.clientHeight <=
-    terminalOutput.scrollTop + 1;
-
-  if (isScrolledToBottom) {
-    scrollToBottom();
-  }
-
-  // Only allow click events that originated from within the terminal container
-  if (event.target.closest(".terminal") !== null) {
     event.stopPropagation();
   }
 
-  // Set focus back to the input field
-  setTimeout(() => {
-    input.focus();
-  }, 0);
+  const input = document.getElementById("terminal-input");
+  if (!input) return;
+
+  input.focus();
+  
+  // Clear any browser selection
+  window.getSelection()?.removeAllRanges();
+
+  const terminalOutput = document.getElementById("terminal-output");
+  if (terminalOutput) {
+    const isScrolledToBottom =
+      terminalOutput.scrollHeight - terminalOutput.clientHeight <=
+      terminalOutput.scrollTop + 1;
+
+    if (isScrolledToBottom) {
+      scrollToBottom();
+    }
+  }
 }
 
+export function theme(event) {
+  const themeName = event.target.dataset.theme;
+  document.querySelectorAll(".theme").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  document.body.className = "theme-" + themeName;
+  handleClick();
+}
 
-  
-  export function theme(event) {
-    let theme = event.target.dataset.theme;
-    [...document.getElementsByClassName("theme")].forEach(b =>
-      b.classList.toggle("active", false)
-    );
-    event.target.classList.add("active");
-    document.body.classList = "theme-" + theme;
-    handleClick();
+export function fullscreen(event) {
+  event.target.blur();
+}
+
+export function globalListener(event) {
+  if (event.key === "F11") {
+    toggleFullscreen();
+  } else if (event.key === "Escape") {
+    toggleFullscreen(false);
   }
-  
-  export function fullscreen(event) {
-    event.target.blur();
-  }
-  
-  export function globalListener(event) {
-    const keyCode = event.keyCode;
-  
-    if (event.target.matches("#terminal-input")) {
-      // Add touch event listeners for terminal input
-      event.target.addEventListener("click", handleClick);
-      event.target.addEventListener("touchstart", handleClick);
-    }
-  
-    if (keyCode === 122) {
-      // F11
-      toggleFullscreen();
-    } else if (keyCode === 27) {
-      // ESC
-      toggleFullscreen(false);
-    }
+}
+
+export function toggleFullscreen(enable) {
+  if (enable === undefined) {
+    enable = !document.fullscreenElement;
   }
 
-  const terminalInput = document.getElementById('terminal-input');
-  terminalInput.addEventListener('input', () => {
-    scrollToBottom();
-  });
-  
-
-  export function toggleFullscreen(enable) {
-    const documentElement = document.documentElement;
-  
-    if (enable === undefined) {
-      enable = !document.fullscreenElement;
-    }
-  
-    if (enable) {
-      if (documentElement.requestFullscreen) {
-        documentElement.requestFullscreen();
-      } else if (documentElement.mozRequestFullScreen) {
-        documentElement.mozRequestFullScreen(); // Firefox
-      } else if (documentElement.webkitRequestFullscreen) {
-        documentElement.webkitRequestFullscreen(); // Chrome, Safari and Opera
-      } else if (documentElement.msRequestFullscreen) {
-        documentElement.msRequestFullscreen(); // IE/Edge
-      }
-    } else {
-      if (document.fullscreenElement) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen(); // Firefox
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen(); // Chrome, Safari and Opera
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen(); // IE/Edge
-        }
-      }
-    }
+  if (enable) {
+    document.documentElement.requestFullscreen?.();
+  } else if (document.fullscreenElement) {
+    document.exitFullscreen?.();
   }
-  
+}
