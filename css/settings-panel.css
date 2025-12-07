@@ -1,0 +1,268 @@
+/* Settings Button - Retro Style */
+.settings-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 2px solid var(--cursor-color, #FFA128);
+  color: var(--cursor-color, #FFA128);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 10px rgba(255, 161, 40, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.settings-button:hover {
+  background: var(--cursor-color, #FFA128);
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 161, 40, 0.6);
+  text-shadow: none;
+}
+
+/* Settings Panel Overlay */
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Settings Panel Container - Terminal Style */
+.settings-panel {
+  position: relative;
+  background: rgba(11, 66, 86, 0.95);
+  border: 3px solid var(--cursor-color, #FFA128);
+  box-shadow:
+    0 0 20px currentColor,
+    inset 0 0 50px rgba(0, 0, 0, 0.5);
+  padding: 0;
+  width: 90%;
+  max-width: 600px;
+  font-family: 'Courier New', monospace;
+  color: var(--cursor-color, #FFA128);
+  animation: terminalBoot 0.5s ease-out;
+  overflow: hidden;
+}
+
+/* ASCII Border Frame */
+.settings-panel::before {
+  content: "┌────────────────── SETTINGS ──────────────────┐";
+  display: block;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid var(--cursor-color, #FFA128);
+  letter-spacing: 1px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.settings-panel::after {
+  content: "└──────────────────────────────────────────────┘";
+  display: block;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-align: center;
+  border-top: 1px solid var(--cursor-color, #FFA128);
+  letter-spacing: 1px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Settings Content Area */
+.settings-content {
+  padding: 30px;
+  position: relative;
+  z-index: 3;
+}
+
+/* Scanline effect for settings panel */
+.settings-panel .scanline-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(255, 255, 255, 0.1) 10%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  opacity: 0.1;
+  pointer-events: none;
+  animation: scanline 6s linear infinite;
+  z-index: 2;
+}
+
+/* Settings Option Groups */
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid rgba(255, 161, 40, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.settings-option label {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+/* Input Styling - Retro Terminal Style */
+.settings-option input[type="number"],
+.settings-option select {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--cursor-color, #FFA128);
+  color: var(--cursor-color, #FFA128);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 6px 12px;
+  min-width: 150px;
+  font-weight: bold;
+}
+
+.settings-option input[type="number"]:focus,
+.settings-option select:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(255, 161, 40, 0.5);
+}
+
+/* Checkbox/Toggle for Sound */
+.settings-option input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--cursor-color, #FFA128);
+  cursor: pointer;
+}
+
+/* Section Title */
+.settings-section-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin: 20px 0 15px 0;
+  color: var(--cursor-color, #FFA128);
+  text-shadow: 0 0 5px currentColor;
+}
+
+/* Button Row */
+.settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.settings-button-action {
+  flex: 1;
+  background: transparent;
+  border: 2px solid var(--cursor-color, #FFA128);
+  color: var(--cursor-color, #FFA128);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.settings-button-action:hover {
+  background: var(--cursor-color, #FFA128);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 161, 40, 0.6);
+  text-shadow: none;
+}
+
+.settings-button-action.primary {
+  background: var(--cursor-color, #FFA128);
+  color: #000;
+}
+
+.settings-button-action.primary:hover {
+  box-shadow: 0 0 20px rgba(255, 161, 40, 0.8);
+}
+
+/* Boot Animation */
+@keyframes terminalBoot {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .settings-panel {
+    width: 95%;
+    max-width: none;
+  }
+
+  .settings-panel::before,
+  .settings-panel::after {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+
+  .settings-content {
+    padding: 20px 15px;
+  }
+
+  .settings-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .settings-option label {
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+
+  .settings-option input[type="number"],
+  .settings-option select {
+    width: 100%;
+  }
+
+  .settings-buttons {
+    flex-direction: column;
+  }
+
+  .settings-button {
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
